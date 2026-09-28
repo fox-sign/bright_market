@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="Bright Market — 便利なブックマークレットを無料で配布するストア">
-<title>Bright Market — Bookmarklet Store</title>
+<title>Bright Market — ブックマークレットを簡単に配布。</title>
 <style>
 :root{
   --bg:#f6f8fc;--card:#fff;--text:#172033;--muted:#667085;
@@ -76,34 +76,34 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#7b8494;font-s
 
     <article class="card">
       <div class="icon">✦</div>
-      <h3>Bright Mode</h3>
-      <p>今見ているページを見やすいライトテーマに整えます。もう一度実行すると元に戻せます。</p>
+      <h3>RocaterX</h3>
+      <p>今見ているページの要素（文字や画像など）を回転させます。後述のものと組み合わせてください。</p>
       <div class="meta"><span class="tag">UI</span><span class="tag">1 click</span></div>
       <div class="install">
-        <a class="drag" href="javascript:(()=>{const k='__bright_mode__',s=document.getElementById(k);if(s){s.remove();return}const x=document.createElement('style');x.id=k;x.textContent='html{filter:brightness(1.08) contrast(.94)} body{background:#fff!important;color:#222!important}';document.documentElement.appendChild(x)})();">ブックマークに追加</a>
-        <button class="copy" data-name="Bright Mode" data-code="javascript:(()=>{const k='__bright_mode__',s=document.getElementById(k);if(s){s.remove();return}const x=document.createElement('style');x.id=k;x.textContent='html{filter:brightness(1.08) contrast(.94)} body{background:#fff!important;color:#222!important}';document.documentElement.appendChild(x)})();">コピー</button>
+        <a class="drag" href="javascript:(function(){const s=document.createElement('style');s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input[type="button"], input[type="submit"] { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();">ブックマークに追加</a>
+        <button class="copy" data-name="RocaterX" data-code="javascript:(function(){const s=document.createElement('style');s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input[type="button"], input[type="submit"] { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();">コピー</button>
       </div>
     </article>
 
     <article class="card">
       <div class="icon">Aa</div>
-      <h3>Page Info</h3>
-      <p>現在のページのタイトル・URLを小さなパネルで表示。コピーもできます。</p>
+      <h3>RocaterX Speed Extention</h3>
+      <p>回転スピードを押すたびに2倍になる。</p>
       <div class="meta"><span class="tag">Utility</span><span class="tag">Info</span></div>
       <div class="install">
-        <a class="drag" href="javascript:(()=>{const t=document.title,u=location.href;prompt('ページ情報\\n\\n'+t+'\\n'+u,u)})();">ブックマークに追加</a>
-        <button class="copy" data-name="Page Info" data-code="javascript:(()=>{const t=document.title,u=location.href;prompt('ページ情報\\n\\n'+t+'\\n'+u,u)})();">コピー</button>
+        <a class="drag" href="javascript:(function(){const s=document.getElementById('spin-style')||[...document.querySelectorAll('style')].find(x=>x.innerHTML.includes('spin 4s'));if(!s)return;const m=s.innerHTML.match(/spin (\d+\.?\d*)s/);if(m){const n=parseFloat(m[1])/2;s.innerHTML=s.innerHTML.replace(/spin \d+\.?\d*s/g,`spin ${n}s`);s.id='spin-style';}})();">ブックマークに追加</a>
+        <button class="copy" data-name="RocaterX Speed Extention" data-code="javascript:(function(){const s=document.getElementById('spin-style')||[...document.querySelectorAll('style')].find(x=>x.innerHTML.includes('spin 4s'));if(!s)return;const m=s.innerHTML.match(/spin (\d+\.?\d*)s/);if(m){const n=parseFloat(m[1])/2;s.innerHTML=s.innerHTML.replace(/spin \d+\.?\d*s/g,`spin ${n}s`);s.id='spin-style';}})();">コピー</button>
       </div>
     </article>
 
     <article class="card">
       <div class="icon">↗</div>
-      <h3>Open in New Tab</h3>
-      <p>現在のページを新しいタブで開き直します。リンクを保存するときにも便利です。</p>
+      <h3>RocaterX Stopper</h3>
+      <p>回転を止めます。</p>
       <div class="meta"><span class="tag">Browser</span><span class="tag">Simple</span></div>
       <div class="install">
-        <a class="drag" href="javascript:window.open(location.href,'_blank')">ブックマークに追加</a>
-        <button class="copy" data-name="Open in New Tab" data-code="javascript:window.open(location.href,'_blank')">コピー</button>
+        <a class="drag" href="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">ブックマークに追加</a>
+        <button class="copy" data-name="RocaterX Stopper" data-code="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">コピー</button>
       </div>
     </article>
 
