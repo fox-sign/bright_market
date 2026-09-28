@@ -57,28 +57,30 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#7b8494;font-s
 <body>
 <header>
   <div class="container nav">
-    <a class="brand" href="#"><span class="logo">B</span> Bright Market</a>
-    <nav class="navlinks"><a href="#market">Market</a><a href="#howto">使い方</a></nav>
+    <a class="brand" href="#"><span class="logo">💡</span> Bright Market</a>
+    <nav class="navlinks"><a href="#market">コンテンツ</a><a href="#howto">使い方</a></nav>
   </div>
 </header>
 
 <main>
 <section class="hero container">
-  <span class="badge">FREE · NO LOGIN</span>
+  <span class="badge">永久無料・アカウント不要</span>
   <h1>Make the web<br><span class="gradient">brighter.</span></h1>
   <p>便利なブックマークレットを、無料・ログイン不要で。<br>気に入ったツールをブックマークバーへ追加して、すぐに使えます。</p>
-  <div class="notice">💡 「ブックマークに追加」をブックマークバーへドラッグ＆ドロップしてください。</div>
+  <div class="notice">➕ 「ブックマークに追加」をブックマークバーへドラッグ＆ドロップしてください。</div>
 </section>
 
 <section id="market" class="container">
-  <div class="section-head"><h2>Bookmarklets</h2><span>3 tools · Free</span></div>
+  <br>
+  <br>
+  <div class="section-head"><h2>Bookmarklets</h2><span>6 tools</span></div>
   <div class="grid">
 
     <article class="card">
-      <div class="icon">✦</div>
+      <div class="icon">🌀</div>
       <h3>RocaterX</h3>
       <p>今見ているページの要素（文字や画像など）を回転させます。後述のものと組み合わせてください。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">1 click</span></div>
+      <div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
       <div class="install">
         <a class="drag" href="javascript:(function(){const s=document.createElement('style');s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input[type="button"], input[type="submit"] { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();">ブックマークに追加</a>
         <button class="copy" data-name="RocaterX" data-code="javascript:(function(){const s=document.createElement('style');s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input[type="button"], input[type="submit"] { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();">コピー</button>
@@ -86,10 +88,10 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#7b8494;font-s
     </article>
 
     <article class="card">
-      <div class="icon">Aa</div>
+      <div class="icon">2x</div>
       <h3>RocaterX Speed Extention</h3>
       <p>回転スピードを押すたびに2倍になる。</p>
-      <div class="meta"><span class="tag">Utility</span><span class="tag">Info</span></div>
+      <div class="meta">UI<span class="tag"></span><span class="tag">RocaterX Series</span></div>
       <div class="install">
         <a class="drag" href="javascript:(function(){const s=document.getElementById('spin-style')||[...document.querySelectorAll('style')].find(x=>x.innerHTML.includes('spin 4s'));if(!s)return;const m=s.innerHTML.match(/spin (\d+\.?\d*)s/);if(m){const n=parseFloat(m[1])/2;s.innerHTML=s.innerHTML.replace(/spin \d+\.?\d*s/g,`spin ${n}s`);s.id='spin-style';}})();">ブックマークに追加</a>
         <button class="copy" data-name="RocaterX Speed Extention" data-code="javascript:(function(){const s=document.getElementById('spin-style')||[...document.querySelectorAll('style')].find(x=>x.innerHTML.includes('spin 4s'));if(!s)return;const m=s.innerHTML.match(/spin (\d+\.?\d*)s/);if(m){const n=parseFloat(m[1])/2;s.innerHTML=s.innerHTML.replace(/spin \d+\.?\d*s/g,`spin ${n}s`);s.id='spin-style';}})();">コピー</button>
@@ -97,7 +99,40 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#7b8494;font-s
     </article>
 
     <article class="card">
-      <div class="icon">↗</div>
+      <div class="icon">⏸</div>
+      <h3>RocaterX Stopper</h3>
+      <p>回転を止めます。</p>
+      <div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
+      <div class="install">
+        <a class="drag" href="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">ブックマークに追加</a>
+        <button class="copy" data-name="RocaterX Stopper" data-code="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">コピー</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="icon">🎨</div>
+      <h3>Coloring Switcher</h3>
+      <p>ページの色を反転します。</p>
+      <div class="meta"><span class="tag">UI</span><span class="tag">Tools</span></div>
+      <div class="install">
+        <a class="drag" href="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();">ブックマークに追加</a>
+        <button class="copy" data-name="Coloring Switcher" data-code="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();">コピー</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="icon">⏸</div>
+      <h3>RocaterX Stopper</h3>
+      <p>回転を止めます。</p>
+      <div class="meta"><span class="tag">Browser</span><span class="tag">Simple</span></div>
+      <div class="install">
+        <a class="drag" href="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">ブックマークに追加</a>
+        <button class="copy" data-name="RocaterX Stopper" data-code="javascript:(function(){const styles=[...document.querySelectorAll('style')].filter(s=>s.innerHTML.includes('spin '));styles.forEach(s=>s.remove());})();">コピー</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="icon">⏸</div>
       <h3>RocaterX Stopper</h3>
       <p>回転を止めます。</p>
       <div class="meta"><span class="tag">Browser</span><span class="tag">Simple</span></div>
