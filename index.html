@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Bright Market — 便利なブックマークレットを無料で配布するストア">
-<title>Bright Market — ブックマークレットを簡単に配布。</title>
+<meta name="description" content="Bright Market — ブックマークレットを配布">
+<title>Bright Market — ブックマークレットを配布</title>
   <script src="https://unpkg.com/lucide@latest"></script>
 <style>
 :root{--bg:#080a12;--bg2:#0d1020;--card:rgba(18,22,38,.74);--text:#f7f8ff;--muted:#a9afc4;--line:rgba(255,255,255,.1);--accent:#8b7cff;--cyan:#5de1ff}
@@ -134,7 +134,7 @@ footer{border-top:1px solid var(--line);padding:27px 0 40px;color:#737c91;font-s
     </article>
 
     <article class="card">
-      <div class="icon"><i data-lucide="image"></i></div>
+      <div class="icon"><i data-lucide="image-minus"></i></div>
       <h3>Media Delete</h3>
       <p>メディア要素を削除します。もう一度押すと元に戻ります。</p>
       <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
@@ -145,7 +145,7 @@ footer{border-top:1px solid var(--line);padding:27px 0 40px;color:#737c91;font-s
     </article>
 
     <article class="card">
-      <div class="icon"><i data-lucide="pause"></i></div>
+      <div class="icon"><i data-lucide="pen-line"></i></div>
       <h3>Pagetext Editor Next</h3>
       <p>ページの文章を編集できるようにします。もう一度押すと変更を保存します。</p>
       <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
@@ -169,7 +169,8 @@ footer{border-top:1px solid var(--line);padding:27px 0 40px;color:#737c91;font-s
     </article>
 
     <article class="card">
-      <div class="icon"><i data-lucide="pause"></i></div>
+      <div class="icon"><i data-lucide="audio-lines-x
+                          "></i></div>
       <h3>Audio Bug Glitcher</h3>
       <p>ページの音声をバグらせます。もう一度押すと元に戻ります。</p>
       <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
@@ -177,7 +178,7 @@ footer{border-top:1px solid var(--line);padding:27px 0 40px;color:#737c91;font-s
         <a class="drag" href="
           javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=>{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&&e.__was_playing){e.play().catch(()=>{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=>{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now<s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=>{});e.__was_playing=false;}if(now-s.lastUpdate>150){s.target=createTarget();s.lastUpdate=now;if(Math.random()<0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=>a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
           "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Pagetext Editor Next
+        <button class="copy" data-name="Audio Bug Glitcher
           " data-code="
           javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=>{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&&e.__was_playing){e.play().catch(()=>{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=>{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now<s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=>{});e.__was_playing=false;}if(now-s.lastUpdate>150){s.target=createTarget();s.lastUpdate=now;if(Math.random()<0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=>a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
           "><i data-lucide="copy"></i>コピー</button>
@@ -193,9 +194,25 @@ footer{border-top:1px solid var(--line);padding:27px 0 40px;color:#737c91;font-s
         <a class="drag" href="
           javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=>{document.open();document.write('<!DOCTYPE html><html><head><title></title></head><body style="background:#fff;%22%3E%3C/body%3E%3C/html%3E');document.close();};wipe();setInterval(wipe,100);})();
           "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Pagetext Editor Next
+        <button class="copy" data-name="DeleterMax Hyper
           " data-code="
           javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=>{document.open();document.write('<!DOCTYPE html><html><head><title></title></head><body style="background:#fff;%22%3E%3C/body%3E%3C/html%3E');document.close();};wipe();setInterval(wipe,100);})();
+          "><i data-lucide="copy"></i>コピー</button>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="icon"><i data-lucide="activity"></i></div>
+      <h3><ruby>ほろ41<rp>(</rp><rt>ほろよい</rt><rp>)</rp></ruby> Extra</h3>
+      <p>ページを酔ったような状態にします。実際に酔う可能性があるので気をつけてください。私は責任を負いません。</p>
+      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+      <div class="install">
+        <a class="drag" href="
+          javascript:(function(){const K='__intense_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()<0.8;return{blur:lowBlur?rand(0,3):rand(3,15),tx:rand(-120,120),ty:rand(-90,90),rot:rand(-15,15),rotX:rand(-35,35),rotY:rand(-40,40),scale:rand(0.85,1.25)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate>80){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=>a+(b-a)*f;const f=0.15;curr.blur=lerp(curr.blur,target.blur,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);const waveX=Math.sin(now*0.005)*30;const waveY=Math.cos(now*0.003)*25;document.body.style.filter=`blur(${curr.blur}px)`;document.body.style.transform=`perspective(500px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();
+          "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+        <button class="copy" data-name="Pagetext Editor Next
+          " data-code="
+          javascript:(function(){const K='__intense_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()<0.8;return{blur:lowBlur?rand(0,3):rand(3,15),tx:rand(-120,120),ty:rand(-90,90),rot:rand(-15,15),rotX:rand(-35,35),rotY:rand(-40,40),scale:rand(0.85,1.25)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate>80){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=>a+(b-a)*f;const f=0.15;curr.blur=lerp(curr.blur,target.blur,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);const waveX=Math.sin(now*0.005)*30;const waveY=Math.cos(now*0.003)*25;document.body.style.filter=`blur(${curr.blur}px)`;document.body.style.transform=`perspective(500px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();
           "><i data-lucide="copy"></i>コピー</button>
       </div>
     </article>
