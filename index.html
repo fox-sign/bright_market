@@ -1,811 +1,1271 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Bright Market — ブックマークレットを配布">
-<title>Bright Market — ブックマークレットを配布</title>
-  <script>try{const t=localStorage.getItem("bright-market-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Bright Market - ブックマークレットを配布" name="description"/>
+<title>Bright Market</title>
+<script>try{const t=localStorage.getItem("bright-market-theme");if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Sawarabi+Gothic&amp;display=swap" rel="stylesheet"/>
 <style>
-        :root {
-            color-scheme: dark;
-            --bg: #080a12;
-            --bg2: #0d1020;
-            --card: rgba(18, 22, 38, .74);
-            --text: #f7f8ff;
-            --muted: #a9afc4;
-            --line: rgba(255, 255, 255, .1);
-            --accent: #8b7cff;
-            --cyan: #5de1ff;
-            --header: rgba(8, 10, 18, .68);
-            --soft: rgba(255, 255, 255, .045);
-            --soft-hover: rgba(255, 255, 255, .09);
-            --grid: rgba(255, 255, 255, .025);
-            --shadow: rgba(0, 0, 0, .28)
-            --icon-color: #c8c2ff;
-            --copy-text: #151a2b;
-        }
-
-        :root[data-theme="light"] {
-            color-scheme: light;
-            --bg: #f7f8fc;
-            --bg2: #eef1f8;
-            --card: rgba(255, 255, 255, .78);
-            --text: #151a2b;
-            --muted: #626b80;
-            --line: rgba(24, 31, 55, .11);
-            --accent: #695cf4;
-            --cyan: #26b7d8;
-            --header: rgba(255, 255, 255, .72);
-            --soft: rgba(25, 31, 55, 0.58);
-            --soft-hover: rgba(25, 31, 55, .09);
-            --grid: rgba(25, 31, 55, .035);
-            --shadow: rgba(31, 38, 68, .14)
-            --icon-color: #1900ff;
-            --copy-text: #f7f8ff;
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        html {
-            scroll-behavior: smooth
-        }
-
-        body {
-            margin: 0;
-            color: var(--text);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-            background: radial-gradient(900px 500px at 8% -5%, rgba(139, 124, 255, .22), transparent 65%), radial-gradient(800px 500px at 95% 12%, rgba(93, 225, 255, .13), transparent 65%), radial-gradient(700px 500px at 50% 65%, rgba(139, 124, 255, .08), transparent 70%), linear-gradient(180deg, var(--bg), var(--bg2));
-            transition: background .55s ease, color .35s ease;
-            min-height: 100vh;
-            overflow-x: hidden
-        }
-
-        body:before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: .25;
-            background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, black, transparent 80%)
-        }
-
-        a {
-            color: inherit
-        }
-
-        .container {
-            width: min(1120px, calc(100% - 36px));
-            margin: auto
-        }
-
-        header {
-            padding: 15px 0;
-            border-bottom: 1px solid var(--line);
-            background: var(--header);
-            backdrop-filter: blur(20px);
-            position: sticky;
-            top: 0;
-            z-index: 10
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            font-weight: 800;
-            font-size: 17px;
-            text-decoration: none
-        }
-
-        .logo {
-            width: 36px;
-            height: 36px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), #b7a7ff);
-            display: grid;
-            place-items: center;
-            color: white;
-            font-weight: 900;
-            box-shadow: 0 0 28px rgba(139, 124, 255, .35)
-        }
-
-        .navlinks {
-            display: flex;
-            gap: 8px;
-            color: #b8bed0;
-            font-size: 13px
-        }
-
-        .navlinks a {
-            text-decoration: none;
-            padding: 9px 13px;
-            border-radius: 10px
-        }
-
-        .navlinks a:hover {
-            background: rgba(255, 255, 255, .06);
-            color: white
-        }
-
-        .hero {
-            padding: 92px 0 74px;
-            text-align: center
-        }
-
-        .badge {
-            display: inline-flex;
-            padding: 7px 12px;
-            border: 1px solid rgba(139, 124, 255, .25);
-            border-radius: 999px;
-            background: rgba(139, 124, 255, .1);
-            color: #c9c2ff;
-            font-size: 12px;
-            font-weight: 750
-        }
-
-        h1 {
-            font-size: clamp(48px, 8vw, 88px);
-            line-height: .98;
-            margin: 21px 0 18px;
-            letter-spacing: -5px
-        }
-
-        .gradient {
-            background: linear-gradient(100deg,  5%,var(--text) #a99eff 48%, #69e6ff 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent
-        }
-
-        .hero p {
-            max-width: 670px;
-            margin: 0 auto;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.8
-        }
-
-        .notice {
-            display: inline-flex;
-            margin: 28px auto 0;
-            padding: 11px 15px;
-            background: var(--soft);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            color: #bfc5d7;
-            font-size: 12px
-        }
-
-        .section-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            gap: 20px;
-            margin: 0 0 20px
-        }
-
-        .section-head h2 {
-            margin: 0;
-            font-size: 24px;
-            letter-spacing: -.8px
-        }
-
-        .section-head span {
-            color: #7f879c;
-            font-size: 12px
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            padding-bottom: 58px
-        }
-
-        .card {
-            position: relative;
-            background: linear-gradient(145deg, var(--card), color-mix(in srgb, var(--card) 68%, var(--bg2)));
-            border: 1px solid var(--line);
-            border-radius: 22px;
-            padding: 22px;
-            transition: background .45s ease, border-color .45s ease, color .35s ease, box-shadow .45s ease;
-            box-shadow: 0 24px 70px var(--shadow);
-            display: flex;
-            flex-direction: column;
-            min-height: 300px;
-            overflow: hidden;
-            transition: transform .22s, border-color .22s, box-shadow .22s
-        }
-
-        .card:before {
-            content: "";
-            position: absolute;
-            inset: -1px;
-            background: radial-gradient(280px 120px at 20% 0%, rgba(139, 124, 255, .13), transparent 70%);
-            pointer-events: none
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(139, 124, 255, .35);
-            box-shadow: 0 28px 80px rgba(0, 0, 0, .36)
-        }
-
-        .icon {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            border-radius: 15px;
-            background: linear-gradient(145deg, rgba(139, 124, 255, .2), rgba(93, 225, 255, .08));
-            border: 1px solid rgba(255, 255, 255, .09);
-            color: #c8c2ff;
-            display: grid;
-            place-items: center;
-            font-size: 20px;
-            font-weight: 800
-        }
-
-        .card h3 {
-            position: relative;
-            margin: 18px 0 7px;
-            font-size: 18px;
-            line-height: 1.3;
-            letter-spacing: -.3px;
-            overflow-wrap: anywhere
-        }
-
-        .card p {
-            position: relative;
-            margin: 0;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.7
-        }
-
-        .meta {
-            position: relative;
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin: 15px 0
-        }
-
-        .tag {
-            font-size: 10px;
-            padding: 5px 8px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .055);
-            border: 1px solid rgba(255, 255, 255, .06);
-            color: #8f97ad
-        }
-
-        .install {
-            position: relative;
-            margin-top: auto;
-            display: flex;
-            gap: 8px;
-            align-items: center
-        }
-
-        .drag {
-            flex: 1;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), #6d8cff);
-            color: white;
-            padding: 11px 12px;
-            font-size: 12px;
-            font-weight: 750;
-            box-shadow: 0 8px 24px rgba(108, 99, 255, .22)
-        }
-
-        .drag:hover {
-            filter: brightness(1.1)
-        }
-
-        .copy {
-            border: 1px solid var(--line);
-            background: var(--soft);
-            color: #c4c9d8;
-            border-radius: 12px;
-            padding: 10px 11px;
-            cursor: pointer
-        }
-
-        .copy:hover {
-            background: var(--soft-hover);
-            color: var(--copy-text)
-        }
-
-        .instructions {
-            width: min(1120px, calc(100% - 36px));
-            margin: 8px auto 70px;
-            background: linear-gradient(145deg, var(--card), color-mix(in srgb, var(--card) 70%, var(--bg2)));
-            border: 1px solid var(--line);
-            border-radius: 22px;
-            padding: 27px;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, .28)
-        }
-
-        .instructions h2 {
-            margin: 0 0 18px;
-            font-size: 22px
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px
-        }
-
-        .step {
-            padding: 17px;
-            background: rgba(255, 255, 255, .035);
-            border: 1px solid rgba(255, 255, 255, .06);
-            border-radius: 15px
-        }
-
-        .num {
-            font-weight: 900;
-            color: #a89fff;
-            font-size: 12px
-        }
-
-        .step p {
-            font-size: 12px;
-            line-height: 1.7;
-            color: var(--muted);
-            margin-bottom: 0
-        }
-
-        footer {
-            border-top: 1px solid var(--line);
-            padding: 27px 0 40px;
-            color: #737c91;
-            font-size: 11px
-        }
-
-        @media(max-width:900px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr)
-            }
-        }
-
-        @media(max-width:700px) {
-            .steps {
-                grid-template-columns: 1fr
-            }
-
-            .hero {
-                padding: 68px 0 55px
-            }
-        }
-
-        @media(max-width:580px) {
-            .container {
-                width: calc(100% - 24px)
-            }
-
-            .instructions {
-                width: calc(100% - 24px)
-            }
-
-            .navlinks a {
-                display: none
-            }
-
-            .navlinks {
-                display: flex
-            }
-
-            .grid {
-                grid-template-columns: 1fr
-            }
-
-            h1 {
-                font-size: 52px;
-                letter-spacing: -3px
-            }
-
-            .hero p {
-                font-size: 14px
-            }
-
-            .card {
-                min-height: 275px
-            }
-        }
-
-        .lucide {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2;
-            vertical-align: middle
-        }
-
-        .logo .lucide {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2.2
-        }
-
-        .navlinks a {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px
-        }
-
-        .badge,
-        .notice {
-            align-items: center;
-            gap: 7px
-        }
-
-        .icon .lucide {
-            width: 23px;
-            height: 23px;
-            stroke-width: 1.8
-        }
-
-        .drag,
-        .copy {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px
-        }
-
-        .copy .lucide {
-            width: 16px;
-            height: 16px
-        }
-
-        .step-head {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            margin-bottom: 8px
-        }
-
-        .step-head .lucide {
-            width: 18px;
-            height: 18px;
-            color: #a89fff
-        }
-
-        .step p {
-            margin-top: 0
-        }
-
-        .num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            background: rgba(139, 124, 255, .1);
-            border: 1px solid rgba(139, 124, 255, .16)
-        }
-
-        .theme-toggle {
-            position: relative;
-            width: 66px;
-            height: 36px;
-            padding: 3px;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            background: var(--soft);
-            color: var(--text);
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            overflow: hidden;
-            transition: background .35s ease, border-color .35s ease, transform .2s ease
-        }
-
-        .theme-toggle:hover {
-            background: var(--soft-hover);
-            transform: translateY(-1px)
-        }
-
-        .theme-toggle:active {
-            transform: scale(.97)
-        }
-
-        .theme-toggle:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 3px
-        }
-
-        .theme-toggle:after {
-            content: "";
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), #9c92ff);
-            box-shadow: 0 4px 14px rgba(105, 92, 244, .3);
-            transition: transform .45s cubic-bezier(.22, 1, .36, 1), background .35s ease
-        }
-
-        .theme-toggle .theme-icon {
-            position: relative;
-            z-index: 1;
-            width: 28px;
-            height: 28px;
-            display: grid;
-            place-items: center;
-            color: var(--muted);
-            transition: color .3s ease, transform .45s cubic-bezier(.22, 1, .36, 1)
-        }
-
-        .theme-toggle .theme-icon .lucide {
-            width: 15px;
-            height: 15px
-        }
-
-        .theme-sun {
-            color: #fff !important
-        }
-
-        .theme-moon {
-            color: var(--muted) !important
-        }
-
-        :root[data-theme="light"] .theme-toggle:after {
-            transform: translateX(30px);
-            background: linear-gradient(135deg, #ffbf55, #ff9f43);
-            box-shadow: 0 4px 14px rgba(255, 159, 67, .25)
-        }
-
-        :root[data-theme="light"] .theme-sun {
-            color: var(--muted) !important
-        }
-
-        .theme-moon {
-            color: #fff !important
-        }
-
-        @media(max-width:580px) {
-            .theme-toggle {
-                width: 60px;
-                height: 34px
-            }
-
-            .theme-toggle:after {
-                width: 26px;
-                height: 26px
-            }
-
-            .theme-toggle .theme-icon {
-                width: 26px;
-                height: 26px
-            }
-
-            :root[data-theme="light"] .theme-toggle:after {
-                transform: translateX(26px)
-            }
-        }
-    </style>
+/* Theme tokens */
+:root {
+
+  color-scheme: dark;
+
+  --bg: #080a12;
+
+  --bg2: #0d1020;
+
+  --card: rgba(18,22,38,.74);
+
+  --text: #f7f8ff;
+
+  --muted: #a9afc4;
+
+  --line: rgba(255,255,255,.1);
+
+  --accent: #8b7cff;
+
+  --cyan: #5de1ff;
+
+  --header: rgba(8,10,18,.68);
+
+  --soft: rgba(255,255,255,.045);
+
+  --soft-hover: rgba(255,255,255,.09);
+
+  --grid: rgba(255,255,255,.025);
+
+  --shadow: rgba(0,0,0,.28);
+
+}
+
+:root[data-theme="dark"] .logo .lucide {
+
+  color: #fff !important;
+
+}
+
+:root[data-theme="light"] .logo .lucide {
+
+  color: #fff !important;
+
+}
+
+:root[data-theme="light"] {
+
+  color-scheme: light;
+
+  --bg: #f7f8fc;
+
+  --bg2: #eef1f8;
+
+  --card: rgba(255,255,255,.78);
+
+  --text: #151a2b;
+
+  --muted: #626b80;
+
+  --line: rgba(24,31,55,.11);
+
+  --accent: #5b21b6;
+
+  --cyan: #26b7d8;
+
+  --header: rgba(255,255,255,.72);
+
+  --soft: rgba(25,31,55,.045);
+
+  --soft-hover: rgba(25,31,55,.09);
+
+  --grid: rgba(25,31,55,.035);
+
+  --shadow: rgba(31,38,68,.14);
+
+}
+
+/* Base and layout */
+* {
+
+  box-sizing: border-box;
+
+}
+
+html {
+
+  scroll-behavior: smooth;
+
+}
+
+body {
+
+  margin: 0;
+
+  color: var(--text);
+
+  font-family: "Sawarabi Gothic",sans-serif;
+
+  background: radial-gradient(900px 500px at 8% -5%,rgba(139,124,255,.22),transparent 65%),radial-gradient(800px 500px at 95% 12%,rgba(93,225,255,.13),transparent 65%),radial-gradient(700px 500px at 50% 65%,rgba(139,124,255,.08),transparent 70%),linear-gradient(180deg,var(--bg),var(--bg2));
+
+  transition: background .55s ease,color .35s ease;
+
+  min-height: 100vh;
+
+  overflow-x: hidden;
+
+}
+
+body:before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: .25;
+
+  background-image: linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+
+  background-size: 42px 42px;
+
+  mask-image: linear-gradient(to bottom,black,transparent 80%);
+
+}
+
+a {
+
+  color: inherit;
+
+}
+
+.container {
+
+  width: min(1120px,calc(100% - 36px));
+
+  margin: auto;
+
+}
+
+header {
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid var(--line);
+
+  background: var(--header);
+
+  backdrop-filter: blur(20px);
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 10;
+
+}
+
+.nav {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+}
+
+.brand {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  font-weight: 800;
+
+  font-size: 17px;
+
+  text-decoration: none;
+
+}
+
+.logo {
+
+  width: 36px;
+
+  height: 36px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg,var(--accent),#b7a7ff);
+
+  display: grid;
+
+  place-items: center;
+
+  color: white;
+
+  font-weight: 900;
+
+  box-shadow: 0 0 28px rgba(139,124,255,.35);
+
+}
+
+.navlinks {
+
+  display: flex;
+
+  gap: 8px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+}
+
+.navlinks a {
+
+  text-decoration: none;
+
+  padding: 9px 13px;
+
+  border-radius: 10px;
+
+}
+
+.navlinks a:hover {
+
+  background: rgba(255,255,255,.06);
+
+  color: white;
+
+}
+
+.hero {
+
+  padding: 92px 0 74px;
+
+  text-align: center;
+
+}
+
+.badge {
+
+  display: inline-flex;
+
+  padding: 7px 12px;
+
+  border: 1px solid rgba(139,124,255,.25);
+
+  border-radius: 999px;
+
+  background: rgba(139,124,255,.1);
+
+  color: #c9c2ff;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+}
+
+:root[data-theme="light"] .badge {
+
+  color: #5b21b6;
+
+}
+
+h1 {
+
+  font-size: clamp(48px,8vw,88px);
+
+  line-height: .98;
+
+  margin: 21px 0 18px;
+
+  letter-spacing: -5px;
+
+}
+
+.gradient {
+
+  background: linear-gradient(100deg,#fff 5%,#a99eff 48%,#69e6ff 100%);
+
+  -webkit-background-clip: text;
+
+  background-clip: text;
+
+  color: transparent;
+
+}
+
+:root[data-theme="light"] .gradient {
+
+  background-image: linear-gradient(100deg,#000 5%,#a99eff 48%,#69e6ff 100%);
+
+}
+
+:root[data-theme="light"] .card .gradient {
+
+  background-image: linear-gradient(100deg,#000 5%,#a99eff 48%,#69e6ff 100%);
+
+}
+
+.hero p {
+
+  max-width: 670px;
+
+  margin: 0 auto;
+
+  color: var(--muted);
+
+  font-size: 16px;
+
+  line-height: 1.8;
+
+}
+
+.notice {
+
+  display: inline-flex;
+
+  margin: 28px auto 0;
+
+  padding: 11px 15px;
+
+  background: var(--soft);
+
+  border: 1px solid var(--line);
+
+  border-radius: 13px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+}
+
+.section-head {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: end;
+
+  gap: 20px;
+
+  margin: 0 0 20px;
+
+}
+
+.section-head h2 {
+
+  margin: 0;
+
+  font-size: 24px;
+
+  letter-spacing: -.8px;
+
+}
+
+.section-head span {
+
+  color: #7f879c;
+
+  font-size: 12px;
+
+}
+
+.grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(3,minmax(0,1fr));
+
+  gap: 16px;
+
+  padding-bottom: 58px;
+
+}
+
+/* Market cards */
+.card {
+
+  position: relative;
+
+  background: linear-gradient(145deg,var(--card),color-mix(in srgb,var(--card) 68%,var(--bg2)));
+
+  border: 1px solid var(--line);
+
+  border-radius: 22px;
+
+  padding: 22px;
+
+  transition: transform .22s ease,background .45s ease,border-color .45s ease,color .35s ease,box-shadow .45s ease;
+
+  box-shadow: 0 24px 70px var(--shadow);
+
+  display: flex;
+
+  flex-direction: column;
+
+  min-height: 300px;
+
+  overflow: hidden;
+
+}
+
+.card:before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -1px;
+
+  background: radial-gradient(280px 120px at 20% 0%,rgba(139,124,255,.13),transparent 70%);
+
+  pointer-events: none;
+
+}
+
+.card:hover {
+
+  transform: translateY(-4px);
+
+  border-color: rgba(139,124,255,.35);
+
+  box-shadow: 0 28px 80px var(--shadow);
+
+}
+
+.icon {
+
+  position: relative;
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 15px;
+
+  background: linear-gradient(145deg,rgba(139,124,255,.2),rgba(93,225,255,.08));
+
+  border: 1px solid rgba(255,255,255,.09);
+
+  color: #c8c2ff;
+
+  display: grid;
+
+  place-items: center;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
+}
+
+.card h3 {
+
+  position: relative;
+
+  margin: 18px 0 7px;
+
+  font-size: 18px;
+
+  line-height: 1.3;
+
+  letter-spacing: -.3px;
+
+  overflow-wrap: anywhere;
+
+}
+
+.card p {
+
+  position: relative;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+}
+
+.meta {
+
+  position: relative;
+
+  display: flex;
+
+  gap: 6px;
+
+  flex-wrap: wrap;
+
+  margin: 15px 0;
+
+}
+
+.tag {
+
+  font-size: 10px;
+
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(255,255,255,.055);
+
+  border: 1px solid rgba(255,255,255,.06);
+
+  color: var(--muted);
+
+}
+
+.install {
+
+  position: relative;
+
+  margin-top: auto;
+
+  display: flex;
+
+  gap: 8px;
+
+  align-items: center;
+
+}
+
+.drag {
+
+  flex: 1;
+
+  text-align: center;
+
+  text-decoration: none;
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg,var(--accent),#6d8cff);
+
+  color: white;
+
+  padding: 11px 12px;
+
+  font-size: 12px;
+
+  font-weight: 750;
+
+  box-shadow: 0 8px 24px rgba(108,99,255,.22);
+
+}
+
+.drag:hover {
+
+  filter: brightness(1.1);
+
+}
+
+.copy {
+
+  border: 1px solid var(--line);
+
+  background: var(--soft);
+
+  color: var(--text);
+
+  border-radius: 12px;
+
+  padding: 10px 11px;
+
+  cursor: pointer;
+
+}
+
+.copy:hover {
+
+  background: var(--soft-hover);
+
+  color: #fff;
+
+}
+
+/* Instructions and footer */
+.instructions {
+
+  width: min(1120px,calc(100% - 36px));
+
+  margin: 8px auto 70px;
+
+  background: linear-gradient(145deg,var(--card),color-mix(in srgb,var(--card) 70%,var(--bg2)));
+
+  border: 1px solid var(--line);
+
+  border-radius: 22px;
+
+  padding: 27px;
+
+  box-shadow: 0 24px 70px rgba(0,0,0,.28);
+
+}
+
+.instructions h2 {
+
+  margin: 0 0 18px;
+
+  font-size: 22px;
+
+}
+
+.steps {
+
+  display: grid;
+
+  grid-template-columns: repeat(3,1fr);
+
+  gap: 12px;
+
+}
+
+.step {
+
+  padding: 17px;
+
+  background: rgba(255,255,255,.035);
+
+  border: 1px solid rgba(255,255,255,.06);
+
+  border-radius: 15px;
+
+}
+
+.num {
+
+  font-weight: 900;
+
+  color: #a89fff;
+
+  font-size: 12px;
+
+}
+
+.step p {
+
+  font-size: 12px;
+
+  line-height: 1.7;
+
+  color: var(--muted);
+
+  margin-bottom: 0;
+
+}
+
+footer {
+
+  border-top: 1px solid var(--line);
+
+  padding: 27px 0 40px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+}
+
+@media (max-width:900px) {
+
+  .grid {
+
+    grid-template-columns: repeat(2,minmax(0,1fr));
+
+  }
+
+}
+
+@media (max-width:700px) {
+
+  .steps {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  .hero {
+
+    padding: 68px 0 55px;
+
+  }
+
+}
+
+@media (max-width:580px) {
+
+  .container {
+
+    width: calc(100% - 24px);
+
+  }
+
+  .instructions {
+
+    width: calc(100% - 24px);
+
+  }
+
+  .navlinks a {
+
+    display: none;
+
+  }
+
+  .navlinks {
+
+    display: flex;
+
+  }
+
+  .grid {
+
+    grid-template-columns: 1fr;
+
+  }
+
+  h1 {
+
+    font-size: 52px;
+
+    letter-spacing: -3px;
+
+  }
+
+  .hero p {
+
+    font-size: 14px;
+
+  }
+
+  .card {
+
+    min-height: 275px;
+
+  }
+
+}
+
+/* Icons and controls */
+.lucide {
+
+  width: 18px;
+
+  height: 18px;
+
+  stroke-width: 2;
+
+  vertical-align: middle;
+
+}
+
+.logo .lucide {
+
+  width: 20px;
+
+  height: 20px;
+
+  stroke-width: 2.2;
+
+}
+
+.navlinks a {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+}
+
+.badge,.notice {
+
+  align-items: center;
+
+  gap: 7px;
+
+}
+
+.icon .lucide {
+
+  width: 23px;
+
+  height: 23px;
+
+  stroke-width: 1.8;
+
+}
+
+.drag,.copy {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+}
+
+.copy .lucide {
+
+  width: 16px;
+
+  height: 16px;
+
+}
+
+.step-head {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 8px;
+
+}
+
+.step-head .lucide {
+
+  width: 18px;
+
+  height: 18px;
+
+  color: #a89fff;
+
+}
+
+.step p {
+
+  margin-top: 0;
+
+}
+
+.num {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 26px;
+
+  height: 26px;
+
+  border-radius: 8px;
+
+  background: rgba(139,124,255,.1);
+
+  border: 1px solid rgba(139,124,255,.16);
+
+}
+
+.theme-toggle {
+
+  position: relative;
+
+  width: 68px;
+
+  height: 36px;
+
+  padding: 3px;
+
+  border: 1px solid var(--line);
+
+  border-radius: 999px;
+
+  background: var(--soft);
+
+  color: var(--text);
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition: background .45s ease,border-color .45s ease,transform .2s ease;
+
+}
+
+.theme-toggle:hover {
+
+  background: var(--soft-hover);
+
+  transform: translateY(-1px);
+
+}
+
+.theme-toggle:active {
+
+  transform: scale(.97);
+
+}
+
+.theme-toggle:focus-visible {
+
+  outline: 2px solid var(--accent);
+
+  outline-offset: 3px;
+
+}
+
+.theme-toggle:after {
+
+  content: "";
+
+  position: absolute;
+
+  top: 3px;
+
+  left: 3px;
+
+  width: 28px;
+
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: var(--accent);
+
+  box-shadow: 0 4px 14px rgba(0,0,0,.2);
+
+  transition: transform .5s cubic-bezier(.22,1,.36,1),background .45s ease;
+
+}
+
+.theme-icon {
+
+  position: relative;
+
+  z-index: 1;
+
+  width: 28px;
+
+  height: 28px;
+
+  display: grid;
+
+  place-items: center;
+
+  color: var(--muted);
+
+  transition: color .35s ease;
+
+}
+
+.theme-icon .lucide {
+
+  width: 15px;
+
+  height: 15px;
+
+}
+
+.theme-sun {
+
+  color: #fff !important;
+
+}
+
+.theme-moon {
+
+  color: var(--muted) !important;
+
+}
+
+:root[data-theme="light"] .theme-toggle:after {
+
+  transform: translateX(32px);
+
+  background: #ffad3d;
+
+}
+
+:root[data-theme="light"] .theme-sun {
+
+  color: var(--muted) !important;
+
+}
+
+:root[data-theme="light"] .theme-moon {
+
+  color: #fff !important;
+
+}
+
+@media (max-width:580px) {
+
+  .theme-toggle {
+
+    width: 60px;
+
+    height: 34px;
+
+  }
+
+  .theme-toggle:after {
+
+    width: 26px;
+
+    height: 26px;
+
+  }
+
+  :root[data-theme="light"] .theme-toggle:after {
+
+    transform: translateX(26px);
+
+  }
+
+}
+
+/* Light-theme accent overrides */
+
+:root[data-theme="light"] .badge {
+
+  color: var(--accent);
+
+  border-color: rgba(91, 33, 182, .28);
+
+  background: rgba(91, 33, 182, .08);
+
+}
+
+:root[data-theme="light"] .card .icon {
+
+  color: var(--accent);
+
+  background: linear-gradient(145deg, rgba(91, 33, 182, .16), rgba(38, 183, 216, .07));
+
+  border-color: rgba(91, 33, 182, .18);
+
+}
+
+:root[data-theme="light"] .step-head .lucide,
+:root[data-theme="light"] .num {
+
+  color: var(--accent);
+
+}
+
+:root[data-theme="light"] .num {
+
+  background: rgba(91, 33, 182, .08);
+
+  border-color: rgba(91, 33, 182, .2);
+
+}
+</style>
 </head>
 <body>
 <header>
-  <div class="container nav">
-    <a class="brand" href="#"><span class="logo"><i data-lucide="lightbulb"></i></span> Bright Market</a>
-    <nav class="navlinks"><a href="#market"><i data-lucide="grid-2x2"></i>コンテンツ</a><a href="#howto"><i data-lucide="book-open"></i>使い方</a><button class="theme-toggle" id="themeToggle" type="button" aria-label="テーマを切り替える" aria-pressed="false"><span class="theme-icon theme-sun"><i data-lucide="sun"></i></span><span class="theme-icon theme-moon"><i data-lucide="moon"></i></span></button></nav>
-  </div>
+<div class="container nav">
+<a class="brand" href="#"><span class="logo"><i data-lucide="lightbulb"></i></span> Bright Market</a>
+<nav class="navlinks"><a href="#market"><i data-lucide="grid-2x2"></i>コンテンツ</a><a href="#howto"><i data-lucide="book-open"></i>使い方</a><button aria-label="テーマを切り替える" aria-pressed="false" class="theme-toggle" id="themeToggle" type="button"><span class="theme-icon theme-sun"><i data-lucide="sun"></i></span><span class="theme-icon theme-moon"><i data-lucide="moon"></i></span></button></nav>
+</div>
 </header>
-
 <main>
 <section class="hero container">
-  <span class="badge"><i data-lucide="sparkles"></i>永久無料・アカウント不要</span>
-  <h1>Make the web<br><span class="gradient">brighter.</span></h1>
-  <p>便利なブックマークレットを、無料・ログイン不要で。<br>気に入ったツールをブックマークバーへ追加して、すぐに使えます。</p>
-  <div class="notice"><i data-lucide="info"></i>「ブックマークに追加」をブックマークバーへドラッグ＆ドロップしてください。</div>
+<span class="badge"><i data-lucide="sparkles"></i>永久無料・アカウント不要</span>
+<h1>Make the web<br/><span class="gradient">brighter.</span></h1>
+<p>便利なブックマークレットを、無料・ログイン不要で。<br/>気に入ったツールをブックマークバーへ追加して、すぐに使えます。</p>
+<div class="notice"><i data-lucide="info"></i>「ブックマークに追加」をブックマークバーへドラッグ＆ドロップしてください。</div>
 </section>
-
-<section id="market" class="container">
-  <div class="section-head"><h2>ブックマークレット一覧</h2><span>12 LINEUP</span></div>
-  <div class="grid">
-
-    <article class="card">
-      <div class="icon"><i data-lucide="rotate-cw"></i></div>
-      <h3>RocaterX</h3>
-      <p>今見ているページの要素（文字や画像など）を回転させます。後述のシリーズのものと組み合わせてください。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){if(document.getElementById('__spin_style__'))return;const s=document.createElement('style');s.id='__spin_style__';s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="RocaterX" data-code="javascript:(function(){if(document.getElementById('__spin_style__'))return;const s=document.createElement('style');s.id='__spin_style__';s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();"><i data-lucide="copy"></i>コピー</button>
+<section class="container" id="market">
+<div class="section-head"><h2>ブックマークレット一覧</h2><span>13 LINEUP</span></div>
+<div class="grid">
+<article class="card">
+<div class="icon"><i data-lucide="rotate-cw"></i></div>
+<h3>RocaterX</h3>
+<p>今見ているページの要素（文字や画像など）を回転させます。後述のシリーズのものと組み合わせてください。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){if(document.getElementById('__spin_style__'))return;const s=document.createElement('style');s.id='__spin_style__';s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){if(document.getElementById('__spin_style__'))return;const s=document.createElement('style');s.id='__spin_style__';s.innerHTML='img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin 4s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';document.head.appendChild(s);})();" data-name="RocaterX"><i data-lucide="copy"></i>コピー</button>
     　</div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="gauge"></i></div>
-      <h3>RocaterX Speed Extention</h3>
-      <p>回転スピードを押すたびに2倍になる。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const s=document.getElementById('__spin_style__');if(!s)return;let currentSpeed=parseFloat(s.dataset.speed)||4;let newSpeed=currentSpeed/2;s.dataset.speed=newSpeed;s.innerHTML=`img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin ${newSpeed}s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="RocaterX Speed Extention" data-code="javascript:(function(){const s=document.getElementById('__spin_style__');if(!s)return;let currentSpeed=parseFloat(s.dataset.speed)||4;let newSpeed=currentSpeed/2;s.dataset.speed=newSpeed;s.innerHTML=`img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin ${newSpeed}s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="pause"></i></div>
-      <h3>RocaterX Stopper</h3>
-      <p>回転を止めます。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const s=document.getElementById('__spin_style__');if(s)s.remove();})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="RocaterX Stopper" data-code="javascript:(function(){const s=document.getElementById('__spin_style__');if(s)s.remove();})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="palette"></i></div>
-      <h3>Coloring Switcher</h3>
-      <p>ページの色を反転します。なお、このページで使うとライトモードに切り替わります。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Tools</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Coloring Switcher" data-code="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="fast-forward"></i></div>
-      <h3>Speed Controllerrrrrrrrrrrrrrrr!! + PLUS</h3>
-      <p>動画の速度を自由に変更できます。</p>
-      <div class="meta"><span class="tag">Video</span><span class="tag">Simple</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const id='v-speed-ctrl';if(document.getElementById(id))return;function hasVideo(doc){if(doc.querySelector('video'))return true;const iframes=doc.querySelectorAll('iframe');for(let f of iframes){try{if(f.contentDocument&&hasVideo(f.contentDocument))return true;}catch(e){}}return false;}if(!hasVideo(document))return;const container=document.createElement('div');container.id=id;container.style.cssText='position:fixed;top:10px;right:10px;z-index:999999;background:rgba(0,0,0,0.85);color:#fff;padding:12px;border-radius:8px;font-family:sans-serif;font-size:12px;width:240px;box-shadow:0%204px%2015px%20rgba(0,0,0,0.5);';const%20title=document.createElement('div');title.style.cssText='display:flex;justify-content:between;margin-bottom:8px;font-weight:bold;';title.innerHTML='%3Cspan%3EVideo%20Speed%20Controller%3C/span%3E';const%20closeBtn=document.createElement('span');closeBtn.innerHTML='%E2%9C%96';closeBtn.style.cssText='cursor:pointer;margin-left:auto;';closeBtn.onclick=()=%3Econtainer.remove();title.appendChild(closeBtn);container.appendChild(title);const%20info=document.createElement('div');info.style.marginBottom='8px';info.innerHTML='Speed:%20%3Cspan%20id=%22v-speed-val%22%20style=%22font-weight:bold;color:#ffcc00;font-size:14px;%22%3E1.0%3C/span%3Ex';container.appendChild(info);const%20slider=document.createElement('input');slider.type='range';slider.min='0.1';slider.max='16384';slider.step='0.1';slider.value='1';slider.style.width='100%';container.appendChild(slider);const%20presetDiv=document.createElement('div');presetDiv.style.cssText='display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;';const%20presets=[0.5,1,2,4,8,16];presets.forEach(p=%3E{const%20btn=document.createElement('button');btn.innerHTML=p+'x';btn.style.cssText='background:#444;color:#fff;border:none;padding:2px%206px;border-radius:4px;cursor:pointer;font-size:10px;';btn.onclick=()=%3E{slider.value=p;updateSpeed(p);};presetDiv.appendChild(btn);});container.appendChild(presetDiv);document.body.appendChild(container);function%20updateSpeed(val){const%20speed=parseFloat(val);document.getElementById('v-speed-val').innerText=speed.toFixed(1);const%20setRate=(doc)=%3E{const%20videos=doc.querySelectorAll('video');videos.forEach(v=%3E{if(v.playbackRate!==speed){v.playbackRate=speed;}});const%20iframes=doc.querySelectorAll('iframe');iframes.forEach(f=%3E{try{if(f.contentDocument)setRate(f.contentDocument);}catch(e){}});};setRate(document);}slider.oninput=(e)=%3E{let%20val=parseFloat(e.target.value);if(val%3C=1){slider.step='0.1';}else%20if(val%3C=16){slider.step='0.5';}else%20if(val%3C=128){slider.step='4';}else%20if(val%3C=1024){slider.step='32';}else{slider.step='256';}updateSpeed(e.target.value);};setInterval(()=%3E{updateSpeed(slider.value);},50);})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Speed Controllerrrrrrrrrrrrrrrr!! + PLUS" data-code="javascript:(function(){const id='v-speed-ctrl';if(document.getElementById(id))return;function hasVideo(doc){if(doc.querySelector('video'))return true;const iframes=doc.querySelectorAll('iframe');for(let f of iframes){try{if(f.contentDocument&&hasVideo(f.contentDocument))return true;}catch(e){}}return false;}if(!hasVideo(document))return;const container=document.createElement('div');container.id=id;container.style.cssText='position:fixed;top:10px;right:10px;z-index:999999;background:rgba(0,0,0,0.85);color:#fff;padding:12px;border-radius:8px;font-family:sans-serif;font-size:12px;width:240px;box-shadow:0%204px%2015px%20rgba(0,0,0,0.5);';const%20title=document.createElement('div');title.style.cssText='display:flex;justify-content:between;margin-bottom:8px;font-weight:bold;';title.innerHTML='%3Cspan%3EVideo%20Speed%20Controller%3C/span%3E';const%20closeBtn=document.createElement('span');closeBtn.innerHTML='%E2%9C%96';closeBtn.style.cssText='cursor:pointer;margin-left:auto;';closeBtn.onclick=()=%3Econtainer.remove();title.appendChild(closeBtn);container.appendChild(title);const%20info=document.createElement('div');info.style.marginBottom='8px';info.innerHTML='Speed:%20%3Cspan%20id=%22v-speed-val%22%20style=%22font-weight:bold;color:#ffcc00;font-size:14px;%22%3E1.0%3C/span%3Ex';container.appendChild(info);const%20slider=document.createElement('input');slider.type='range';slider.min='0.1';slider.max='16384';slider.step='0.1';slider.value='1';slider.style.width='100%';container.appendChild(slider);const%20presetDiv=document.createElement('div');presetDiv.style.cssText='display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;';const%20presets=[0.5,1,2,4,8,16];presets.forEach(p=%3E{const%20btn=document.createElement('button');btn.innerHTML=p+'x';btn.style.cssText='background:#444;color:#fff;border:none;padding:2px%206px;border-radius:4px;cursor:pointer;font-size:10px;';btn.onclick=()=%3E{slider.value=p;updateSpeed(p);};presetDiv.appendChild(btn);});container.appendChild(presetDiv);document.body.appendChild(container);function%20updateSpeed(val){const%20speed=parseFloat(val);document.getElementById('v-speed-val').innerText=speed.toFixed(1);const%20setRate=(doc)=%3E{const%20videos=doc.querySelectorAll('video');videos.forEach(v=%3E{if(v.playbackRate!==speed){v.playbackRate=speed;}});const%20iframes=doc.querySelectorAll('iframe');iframes.forEach(f=%3E{try{if(f.contentDocument)setRate(f.contentDocument);}catch(e){}});};setRate(document);}slider.oninput=(e)=%3E{let%20val=parseFloat(e.target.value);if(val%3C=1){slider.step='0.1';}else%20if(val%3C=16){slider.step='0.5';}else%20if(val%3C=128){slider.step='4';}else%20if(val%3C=1024){slider.step='32';}else{slider.step='256';}updateSpeed(e.target.value);};setInterval(()=%3E{updateSpeed(slider.value);},50);})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="section"></i></div>
-      <h3>Text Bug Glitcher</h3>
-      <p>文字数を変えずにページ内の文章をランダムに変更し続けます。</p>
-      <div class="meta"><span class="tag">Browser</span><span class="tag">Simple</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const id='txt-shuffle-timer';const mapKey='__orig_txt_map__';const obsId='__txt_shuffle_obs__';const styleId='__txt_shuffle_style__';if(window[id]){cancelAnimationFrame(window[id]);delete window[id];if(window[obsId]){window[obsId].disconnect();delete window[obsId];}const st=document.getElementById(styleId);if(st)st.remove();if(window[mapKey]){window[mapKey].forEach((orig,target)=>{try{if(target instanceof Node){if(target.parentNode)target.textContent=orig;}else if(target&&target.el){if(target.type==='val'){target.el.value=orig;}else if(target.type==='ph'){target.el.placeholder=orig;}else if(target.type==='pseudo'){target.el.style.removeProperty(target.prop);}}}catch(e){}});window[mapKey].clear();delete window[mapKey];}return;}const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A%E3%81%8B%E3%81%8D%E3%81%8F%E3%81%91%E3%81%93%E3%81%95%E3%81%97%E3%81%99%E3%81%9B%E3%81%9D%E3%81%9F%E3%81%A1%E3%81%A4%E3%81%A6%E3%81%A8%E3%81%AA%E3%81%AB%E3%81%AC%E3%81%AD%E3%81%AE%E3%81%AF%E3%81%B2%E3%81%B5%E3%81%B8%E3%81%BB%E3%81%BE%E3%81%BF%E3%82%80%E3%82%81%E3%82%82%E3%82%84%E3%82%86%E3%82%88%E3%82%89%E3%82%8A%E3%82%8B%E3%82%8C%E3%82%8D%E3%82%8F%E3%82%92%E3%82%93#$@%&*!?%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91';window[mapKey]=window[mapKey]||new%20Map();if(!document.getElementById(styleId)){const%20st=document.createElement('style');st.id=styleId;st.innerHTML='*::before%20{%20content:%20var(--bg-before-text,%20inherit)%20!important;%20}%20*::after%20{%20content:%20var(--bg-after-text,%20inherit)%20!important;%20}';document.head.appendChild(st);}function%20scan(root){if(!root)return;const%20els=(root.nodeType===1)?[root,...root.querySelectorAll('*')]:[];els.forEach(el=%3E{if(['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(el.tagName))return;if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){let%20hasVal=false,hasPh=false;for(let%20k%20of%20window[mapKey].keys()){if(k.el===el){if(k.type==='val')hasVal=true;if(k.type==='ph')hasPh=true;}}if(!hasVal&&el.value)window[mapKey].set({el,type:'val'},el.value);if(!hasPh&&el.placeholder)window[mapKey].set({el,type:'ph'},el.placeholder);}const%20bStyle=window.getComputedStyle(el,'::before');const%20aStyle=window.getComputedStyle(el,'::after');if(bStyle&&bStyle.content&&bStyle.content!=='none'&&bStyle.content!=='normal'){let%20bTxt=bStyle.content.replace(/^[%22']|[%22']$/g,'');if(bTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-before-text'},bTxt);}if(aStyle&&aStyle.content&&aStyle.content!=='none'&&aStyle.content!=='normal'){let%20aTxt=aStyle.content.replace(/^[%22']|[%22']$/g,'');if(aTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-after-text'},aTxt);}if(el.shadowRoot)scan(el.shadowRoot);});const%20walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);while(walk.nextNode()){const%20node=walk.currentNode;if(node.parentElement&&!['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(node.parentElement.tagName)){if(!window[mapKey].has(node)){window[mapKey].set(node,node.textContent);}}}}scan(document.body);window[obsId]=new%20MutationObserver((mutations)=%3E{mutations.forEach(m=%3E{m.addedNodes.forEach(n=%3Escan(n));});});window[obsId].observe(document.body,{childList:true,subtree:true});function%20getShuffleStr(orig){let%20res='';for(let%20i=0;i%3Corig.length;i++){res+=/\s/.test(orig[i])?orig[i]:chars[(Math.random()*chars.length)|0];}return%20res;}function%20shuffle(){window[mapKey].forEach((orig,target)=%3E{try{if(target%20instanceof%20Node){if(target.parentNode)target.textContent=getShuffleStr(orig);}else%20if(target&&target.el){const%20shf=getShuffleStr(orig);if(target.type==='val'){target.el.value=shf;}else%20if(target.type==='ph'){target.el.placeholder=shf;}else%20if(target.type==='pseudo'){target.el.style.setProperty(target.prop,'%22'+shf+'%22');}}}catch(e){}});}function%20loop(){shuffle();window[id]=requestAnimationFrame(loop);}loop();})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Text Bug Glitcher" data-code="javascript:(function(){const id='txt-shuffle-timer';const mapKey='__orig_txt_map__';const obsId='__txt_shuffle_obs__';const styleId='__txt_shuffle_style__';if(window[id]){cancelAnimationFrame(window[id]);delete window[id];if(window[obsId]){window[obsId].disconnect();delete window[obsId];}const st=document.getElementById(styleId);if(st)st.remove();if(window[mapKey]){window[mapKey].forEach((orig,target)=>{try{if(target instanceof Node){if(target.parentNode)target.textContent=orig;}else if(target&&target.el){if(target.type==='val'){target.el.value=orig;}else if(target.type==='ph'){target.el.placeholder=orig;}else if(target.type==='pseudo'){target.el.style.removeProperty(target.prop);}}}catch(e){}});window[mapKey].clear();delete window[mapKey];}return;}const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A%E3%81%8B%E3%81%8D%E3%81%8F%E3%81%91%E3%81%93%E3%81%95%E3%81%97%E3%81%99%E3%81%9B%E3%81%9D%E3%81%9F%E3%81%A1%E3%81%A4%E3%81%A6%E3%81%A8%E3%81%AA%E3%81%AB%E3%81%AC%E3%81%AD%E3%81%AE%E3%81%AF%E3%81%B2%E3%81%B5%E3%81%B8%E3%81%BB%E3%81%BE%E3%81%BF%E3%82%80%E3%82%81%E3%82%82%E3%82%84%E3%82%86%E3%82%88%E3%82%89%E3%82%8A%E3%82%8B%E3%82%8C%E3%82%8D%E3%82%8F%E3%82%92%E3%82%93#$@%&*!?%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91';window[mapKey]=window[mapKey]||new%20Map();if(!document.getElementById(styleId)){const%20st=document.createElement('style');st.id=styleId;st.innerHTML='*::before%20{%20content:%20var(--bg-before-text,%20inherit)%20!important;%20}%20*::after%20{%20content:%20var(--bg-after-text,%20inherit)%20!important;%20}';document.head.appendChild(st);}function%20scan(root){if(!root)return;const%20els=(root.nodeType===1)?[root,...root.querySelectorAll('*')]:[];els.forEach(el=%3E{if(['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(el.tagName))return;if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){let%20hasVal=false,hasPh=false;for(let%20k%20of%20window[mapKey].keys()){if(k.el===el){if(k.type==='val')hasVal=true;if(k.type==='ph')hasPh=true;}}if(!hasVal&&el.value)window[mapKey].set({el,type:'val'},el.value);if(!hasPh&&el.placeholder)window[mapKey].set({el,type:'ph'},el.placeholder);}const%20bStyle=window.getComputedStyle(el,'::before');const%20aStyle=window.getComputedStyle(el,'::after');if(bStyle&&bStyle.content&&bStyle.content!=='none'&&bStyle.content!=='normal'){let%20bTxt=bStyle.content.replace(/^[%22']|[%22']$/g,'');if(bTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-before-text'},bTxt);}if(aStyle&&aStyle.content&&aStyle.content!=='none'&&aStyle.content!=='normal'){let%20aTxt=aStyle.content.replace(/^[%22']|[%22']$/g,'');if(aTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-after-text'},aTxt);}if(el.shadowRoot)scan(el.shadowRoot);});const%20walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);while(walk.nextNode()){const%20node=walk.currentNode;if(node.parentElement&&!['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(node.parentElement.tagName)){if(!window[mapKey].has(node)){window[mapKey].set(node,node.textContent);}}}}scan(document.body);window[obsId]=new%20MutationObserver((mutations)=%3E{mutations.forEach(m=%3E{m.addedNodes.forEach(n=%3Escan(n));});});window[obsId].observe(document.body,{childList:true,subtree:true});function%20getShuffleStr(orig){let%20res='';for(let%20i=0;i%3Corig.length;i++){res+=/\s/.test(orig[i])?orig[i]:chars[(Math.random()*chars.length)|0];}return%20res;}function%20shuffle(){window[mapKey].forEach((orig,target)=%3E{try{if(target%20instanceof%20Node){if(target.parentNode)target.textContent=getShuffleStr(orig);}else%20if(target&&target.el){const%20shf=getShuffleStr(orig);if(target.type==='val'){target.el.value=shf;}else%20if(target.type==='ph'){target.el.placeholder=shf;}else%20if(target.type==='pseudo'){target.el.style.setProperty(target.prop,'%22'+shf+'%22');}}}catch(e){}});}function%20loop(){shuffle();window[id]=requestAnimationFrame(loop);}loop();})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="image-minus"></i></div>
-      <h3>Media Delete</h3>
-      <p>メディア要素を削除します。もう一度押すと元に戻ります。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const KEY='__media_hidden_state__';const elements=document.querySelectorAll('img,video,audio,svg,canvas,picture,embed,object,iframe');if(!window[KEY]){window[KEY]={elements:[],bgElements:[]};elements.forEach(el=>{window[KEY].elements.push({el:el,originalDisplay:el.style.display});el.style.display='none';});document.querySelectorAll('*').forEach(el=>{const bg=window.getComputedStyle(el).backgroundImage;if(bg&&bg!=='none'){window[KEY].bgElements.push({el:el,originalBg:el.style.backgroundImage});el.style.backgroundImage='none';}});}else{window[KEY].elements.forEach(item=>{item.el.style.display=item.originalDisplay;});window[KEY].bgElements.forEach(item=>{item.el.style.backgroundImage=item.originalBg;});delete window[KEY];}})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Media Delete" data-code="javascript:(function(){const KEY='__media_hidden_state__';const elements=document.querySelectorAll('img,video,audio,svg,canvas,picture,embed,object,iframe');if(!window[KEY]){window[KEY]={elements:[],bgElements:[]};elements.forEach(el=>{window[KEY].elements.push({el:el,originalDisplay:el.style.display});el.style.display='none';});document.querySelectorAll('*').forEach(el=>{const bg=window.getComputedStyle(el).backgroundImage;if(bg&&bg!=='none'){window[KEY].bgElements.push({el:el,originalBg:el.style.backgroundImage});el.style.backgroundImage='none';}});}else{window[KEY].elements.forEach(item=>{item.el.style.display=item.originalDisplay;});window[KEY].bgElements.forEach(item=>{item.el.style.backgroundImage=item.originalBg;});delete window[KEY];}})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="pen-line"></i></div>
-      <h3>Pagetext Editor Next</h3>
-      <p>ページの文章を編集できるようにします。もう一度押すと変更を保存します。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const d=document;d.body.contentEditable=d.body.contentEditable==='true'?'false':'true';d.designMode=d.designMode==='on'?'off':'on';})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Pagetext Editor Next
-          " data-code="javascript:(function(){const d=document;d.body.contentEditable=d.body.contentEditable==='true'?'false':'true';d.designMode=d.designMode==='on'?'off':'on';})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="images"></i></div>
-      <h3>Image Bug Glitcher</h3>
-      <p>ページの画像をバグらせます。もう一度押すと元に戻ります。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="javascript:(function(){const K='__fluid_filter_anim_all__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('*').forEach(e=>{if(e.__orig_fltr!==undefined){e.style.filter=e.__orig_fltr;delete e.__orig_fltr;}if(e.__filter_id){e.removeAttribute('data-fltr-id');delete e.__filter_id;}});const s=document.getElementById('__fltr_ps_style__');if(s)s.remove();delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{hue:rand(0,360),blur:rand(0,4),invert:rand(0,80),saturate:rand(100,300),contrast:rand(100,200)};}let styleEl=document.getElementById('__fltr_ps_style__');if(!styleEl){styleEl=document.createElement('style');styleEl.id='__fltr_ps_style__';document.head.appendChild(styleEl);}const targets=new Set(document.querySelectorAll('img,video,svg,canvas,iframe,picture,object,embed'));let idCounter=0;document.querySelectorAll('*').forEach(e=>{try{const cs=window.getComputedStyle(e);const bg=cs.backgroundImage||cs.background;const bB=window.getComputedStyle(e,'::before').backgroundImage;const bA=window.getComputedStyle(e,'::after').backgroundImage;const hasBg=bg&&bg!=='none'&&bg.includes('url(');const hasBefore=bB&&bB!=='none'&&bB.includes('url(');const hasAfter=bA&&bA!=='none'&&bA.includes('url(');if(hasBg||hasBefore||hasAfter){targets.add(e);if(!e.__filter_id){e.__filter_id='fltr-'+(++idCounter);e.setAttribute('data-fltr-id',e.__filter_id);}}}catch(err){}});const states=new Map();targets.forEach(e=>{if(e.__orig_fltr===undefined)e.__orig_fltr=e.style.filter||'';states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0});});function loop(now){let cssRules='';targets.forEach(e=>{const s=states.get(e);if(!s)return;if(now-s.lastUpdate>100){s.target=createTarget();s.lastUpdate=now;}const lerp=(a,b,t)=>a+(b-a)*t;const c=s.curr,t=s.target,f=0.08;c.hue=lerp(c.hue,t.hue,f);c.blur=lerp(c.blur,t.blur,f);c.invert=lerp(c.invert,t.invert,f);c.saturate=lerp(c.saturate,t.saturate,f);c.contrast=lerp(c.contrast,t.contrast,f);const fltrStr=`hue-rotate(${c.hue}deg) blur(${c.blur}px) invert(${c.invert}%) saturate(${c.saturate}%) contrast(${c.contrast}%)`;e.style.filter=fltrStr;if(e.__filter_id){cssRules+=`[data-fltr-id="${e.__filter_id}"]::before, [data-fltr-id="${e.__filter_id}"]::after { filter: ${fltrStr} !important; }\n`;}});styleEl.textContent=cssRules;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Image Bug Glitcher
-          " data-code="javascript:(function(){const K='__fluid_filter_anim_all__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('*').forEach(e=>{if(e.__orig_fltr!==undefined){e.style.filter=e.__orig_fltr;delete e.__orig_fltr;}if(e.__filter_id){e.removeAttribute('data-fltr-id');delete e.__filter_id;}});const s=document.getElementById('__fltr_ps_style__');if(s)s.remove();delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{hue:rand(0,360),blur:rand(0,4),invert:rand(0,80),saturate:rand(100,300),contrast:rand(100,200)};}let styleEl=document.getElementById('__fltr_ps_style__');if(!styleEl){styleEl=document.createElement('style');styleEl.id='__fltr_ps_style__';document.head.appendChild(styleEl);}const targets=new Set(document.querySelectorAll('img,video,svg,canvas,iframe,picture,object,embed'));let idCounter=0;document.querySelectorAll('*').forEach(e=>{try{const cs=window.getComputedStyle(e);const bg=cs.backgroundImage||cs.background;const bB=window.getComputedStyle(e,'::before').backgroundImage;const bA=window.getComputedStyle(e,'::after').backgroundImage;const hasBg=bg&&bg!=='none'&&bg.includes('url(');const hasBefore=bB&&bB!=='none'&&bB.includes('url(');const hasAfter=bA&&bA!=='none'&&bA.includes('url(');if(hasBg||hasBefore||hasAfter){targets.add(e);if(!e.__filter_id){e.__filter_id='fltr-'+(++idCounter);e.setAttribute('data-fltr-id',e.__filter_id);}}}catch(err){}});const states=new Map();targets.forEach(e=>{if(e.__orig_fltr===undefined)e.__orig_fltr=e.style.filter||'';states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0});});function loop(now){let cssRules='';targets.forEach(e=>{const s=states.get(e);if(!s)return;if(now-s.lastUpdate>100){s.target=createTarget();s.lastUpdate=now;}const lerp=(a,b,t)=>a+(b-a)*t;const c=s.curr,t=s.target,f=0.08;c.hue=lerp(c.hue,t.hue,f);c.blur=lerp(c.blur,t.blur,f);c.invert=lerp(c.invert,t.invert,f);c.saturate=lerp(c.saturate,t.saturate,f);c.contrast=lerp(c.contrast,t.contrast,f);const fltrStr=`hue-rotate(${c.hue}deg) blur(${c.blur}px) invert(${c.invert}%) saturate(${c.saturate}%) contrast(${c.contrast}%)`;e.style.filter=fltrStr;if(e.__filter_id){cssRules+=`[data-fltr-id="${e.__filter_id}"]::before, [data-fltr-id="${e.__filter_id}"]::after { filter: ${fltrStr} !important; }\n`;}});styleEl.textContent=cssRules;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();"><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="audio-lines-x
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="gauge"></i></div>
+<h3>RocaterX Speed Extention</h3>
+<p>回転スピードを押すたびに2倍になる。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const s=document.getElementById('__spin_style__');if(!s)return;let currentSpeed=parseFloat(s.dataset.speed)||4;let newSpeed=currentSpeed/2;s.dataset.speed=newSpeed;s.innerHTML=`img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin ${newSpeed}s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const s=document.getElementById('__spin_style__');if(!s)return;let currentSpeed=parseFloat(s.dataset.speed)||4;let newSpeed=currentSpeed/2;s.dataset.speed=newSpeed;s.innerHTML=`img, svg, canvas, p, span, h1, h2, h3, h4, h5, h6, a, li, video, button, input { animation: spin ${newSpeed}s linear infinite !important; display: inline-block !important; } @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;})();" data-name="RocaterX Speed Extention"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="pause"></i></div>
+<h3>RocaterX Stopper</h3>
+<p>回転を止めます。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">RocaterX Series</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const s=document.getElementById('__spin_style__');if(s)s.remove();})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const s=document.getElementById('__spin_style__');if(s)s.remove();})();" data-name="RocaterX Stopper"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="palette"></i></div>
+<h3>Coloring Switcher</h3>
+<p>ページの色を反転します。なお、このページで使うとライトモードに切り替わります。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Tools</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const id='invert-style';let s=document.getElementById(id);if(s){s.remove();}else{s=document.createElement('style');s.id=id;s.innerHTML='html { filter: invert(1) hue-rotate(180deg) !important; } img, video { filter: invert(1) hue-rotate(180deg) !important; } canvas { filter: none !important; }';document.head.appendChild(s);}})();" data-name="Coloring Switcher"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="fast-forward"></i></div>
+<h3>Speed Controllerrrrrrrrrrrrrrrr!! + PLUS</h3>
+<p>動画の速度を自由に変更できます。</p>
+<div class="meta"><span class="tag">Video</span><span class="tag">Simple</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const id='v-speed-ctrl';if(document.getElementById(id))return;function hasVideo(doc){if(doc.querySelector('video'))return true;const iframes=doc.querySelectorAll('iframe');for(let f of iframes){try{if(f.contentDocument&amp;&amp;hasVideo(f.contentDocument))return true;}catch(e){}}return false;}if(!hasVideo(document))return;const container=document.createElement('div');container.id=id;container.style.cssText='position:fixed;top:10px;right:10px;z-index:999999;background:rgba(0,0,0,0.85);color:#fff;padding:12px;border-radius:8px;font-family:sans-serif;font-size:12px;width:240px;box-shadow:0%204px%2015px%20rgba(0,0,0,0.5);';const%20title=document.createElement('div');title.style.cssText='display:flex;justify-content:between;margin-bottom:8px;font-weight:bold;';title.innerHTML='%3Cspan%3EVideo%20Speed%20Controller%3C/span%3E';const%20closeBtn=document.createElement('span');closeBtn.innerHTML='%E2%9C%96';closeBtn.style.cssText='cursor:pointer;margin-left:auto;';closeBtn.onclick=()=%3Econtainer.remove();title.appendChild(closeBtn);container.appendChild(title);const%20info=document.createElement('div');info.style.marginBottom='8px';info.innerHTML='Speed:%20%3Cspan%20id=%22v-speed-val%22%20style=%22font-weight:bold;color:#ffcc00;font-size:14px;%22%3E1.0%3C/span%3Ex';container.appendChild(info);const%20slider=document.createElement('input');slider.type='range';slider.min='0.1';slider.max='16384';slider.step='0.1';slider.value='1';slider.style.width='100%';container.appendChild(slider);const%20presetDiv=document.createElement('div');presetDiv.style.cssText='display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;';const%20presets=[0.5,1,2,4,8,16];presets.forEach(p=%3E{const%20btn=document.createElement('button');btn.innerHTML=p+'x';btn.style.cssText='background:#444;color:#fff;border:none;padding:2px%206px;border-radius:4px;cursor:pointer;font-size:10px;';btn.onclick=()=%3E{slider.value=p;updateSpeed(p);};presetDiv.appendChild(btn);});container.appendChild(presetDiv);document.body.appendChild(container);function%20updateSpeed(val){const%20speed=parseFloat(val);document.getElementById('v-speed-val').innerText=speed.toFixed(1);const%20setRate=(doc)=%3E{const%20videos=doc.querySelectorAll('video');videos.forEach(v=%3E{if(v.playbackRate!==speed){v.playbackRate=speed;}});const%20iframes=doc.querySelectorAll('iframe');iframes.forEach(f=%3E{try{if(f.contentDocument)setRate(f.contentDocument);}catch(e){}});};setRate(document);}slider.oninput=(e)=%3E{let%20val=parseFloat(e.target.value);if(val%3C=1){slider.step='0.1';}else%20if(val%3C=16){slider.step='0.5';}else%20if(val%3C=128){slider.step='4';}else%20if(val%3C=1024){slider.step='32';}else{slider.step='256';}updateSpeed(e.target.value);};setInterval(()=%3E{updateSpeed(slider.value);},50);})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const id='v-speed-ctrl';if(document.getElementById(id))return;function hasVideo(doc){if(doc.querySelector('video'))return true;const iframes=doc.querySelectorAll('iframe');for(let f of iframes){try{if(f.contentDocument&amp;&amp;hasVideo(f.contentDocument))return true;}catch(e){}}return false;}if(!hasVideo(document))return;const container=document.createElement('div');container.id=id;container.style.cssText='position:fixed;top:10px;right:10px;z-index:999999;background:rgba(0,0,0,0.85);color:#fff;padding:12px;border-radius:8px;font-family:sans-serif;font-size:12px;width:240px;box-shadow:0%204px%2015px%20rgba(0,0,0,0.5);';const%20title=document.createElement('div');title.style.cssText='display:flex;justify-content:between;margin-bottom:8px;font-weight:bold;';title.innerHTML='%3Cspan%3EVideo%20Speed%20Controller%3C/span%3E';const%20closeBtn=document.createElement('span');closeBtn.innerHTML='%E2%9C%96';closeBtn.style.cssText='cursor:pointer;margin-left:auto;';closeBtn.onclick=()=%3Econtainer.remove();title.appendChild(closeBtn);container.appendChild(title);const%20info=document.createElement('div');info.style.marginBottom='8px';info.innerHTML='Speed:%20%3Cspan%20id=%22v-speed-val%22%20style=%22font-weight:bold;color:#ffcc00;font-size:14px;%22%3E1.0%3C/span%3Ex';container.appendChild(info);const%20slider=document.createElement('input');slider.type='range';slider.min='0.1';slider.max='16384';slider.step='0.1';slider.value='1';slider.style.width='100%';container.appendChild(slider);const%20presetDiv=document.createElement('div');presetDiv.style.cssText='display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;';const%20presets=[0.5,1,2,4,8,16];presets.forEach(p=%3E{const%20btn=document.createElement('button');btn.innerHTML=p+'x';btn.style.cssText='background:#444;color:#fff;border:none;padding:2px%206px;border-radius:4px;cursor:pointer;font-size:10px;';btn.onclick=()=%3E{slider.value=p;updateSpeed(p);};presetDiv.appendChild(btn);});container.appendChild(presetDiv);document.body.appendChild(container);function%20updateSpeed(val){const%20speed=parseFloat(val);document.getElementById('v-speed-val').innerText=speed.toFixed(1);const%20setRate=(doc)=%3E{const%20videos=doc.querySelectorAll('video');videos.forEach(v=%3E{if(v.playbackRate!==speed){v.playbackRate=speed;}});const%20iframes=doc.querySelectorAll('iframe');iframes.forEach(f=%3E{try{if(f.contentDocument)setRate(f.contentDocument);}catch(e){}});};setRate(document);}slider.oninput=(e)=%3E{let%20val=parseFloat(e.target.value);if(val%3C=1){slider.step='0.1';}else%20if(val%3C=16){slider.step='0.5';}else%20if(val%3C=128){slider.step='4';}else%20if(val%3C=1024){slider.step='32';}else{slider.step='256';}updateSpeed(e.target.value);};setInterval(()=%3E{updateSpeed(slider.value);},50);})();" data-name="Speed Controllerrrrrrrrrrrrrrrr!! + PLUS"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="section"></i></div>
+<h3>Text Bug Glitcher</h3>
+<p>文字数を変えずにページ内の文章をランダムに変更し続けます。</p>
+<div class="meta"><span class="tag">Browser</span><span class="tag">Simple</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const id='txt-shuffle-timer';const mapKey='__orig_txt_map__';const obsId='__txt_shuffle_obs__';const styleId='__txt_shuffle_style__';if(window[id]){cancelAnimationFrame(window[id]);delete window[id];if(window[obsId]){window[obsId].disconnect();delete window[obsId];}const st=document.getElementById(styleId);if(st)st.remove();if(window[mapKey]){window[mapKey].forEach((orig,target)=&gt;{try{if(target instanceof Node){if(target.parentNode)target.textContent=orig;}else if(target&amp;&amp;target.el){if(target.type==='val'){target.el.value=orig;}else if(target.type==='ph'){target.el.placeholder=orig;}else if(target.type==='pseudo'){target.el.style.removeProperty(target.prop);}}}catch(e){}});window[mapKey].clear();delete window[mapKey];}return;}const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A%E3%81%8B%E3%81%8D%E3%81%8F%E3%81%91%E3%81%93%E3%81%95%E3%81%97%E3%81%99%E3%81%9B%E3%81%9D%E3%81%9F%E3%81%A1%E3%81%A4%E3%81%A6%E3%81%A8%E3%81%AA%E3%81%AB%E3%81%AC%E3%81%AD%E3%81%AE%E3%81%AF%E3%81%B2%E3%81%B5%E3%81%B8%E3%81%BB%E3%81%BE%E3%81%BF%E3%82%80%E3%82%81%E3%82%82%E3%82%84%E3%82%86%E3%82%88%E3%82%89%E3%82%8A%E3%82%8B%E3%82%8C%E3%82%8D%E3%82%8F%E3%82%92%E3%82%93#$@%&amp;*!?%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91';window[mapKey]=window[mapKey]||new%20Map();if(!document.getElementById(styleId)){const%20st=document.createElement('style');st.id=styleId;st.innerHTML='*::before%20{%20content:%20var(--bg-before-text,%20inherit)%20!important;%20}%20*::after%20{%20content:%20var(--bg-after-text,%20inherit)%20!important;%20}';document.head.appendChild(st);}function%20scan(root){if(!root)return;const%20els=(root.nodeType===1)?[root,...root.querySelectorAll('*')]:[];els.forEach(el=%3E{if(['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(el.tagName))return;if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){let%20hasVal=false,hasPh=false;for(let%20k%20of%20window[mapKey].keys()){if(k.el===el){if(k.type==='val')hasVal=true;if(k.type==='ph')hasPh=true;}}if(!hasVal&amp;&amp;el.value)window[mapKey].set({el,type:'val'},el.value);if(!hasPh&amp;&amp;el.placeholder)window[mapKey].set({el,type:'ph'},el.placeholder);}const%20bStyle=window.getComputedStyle(el,'::before');const%20aStyle=window.getComputedStyle(el,'::after');if(bStyle&amp;&amp;bStyle.content&amp;&amp;bStyle.content!=='none'&amp;&amp;bStyle.content!=='normal'){let%20bTxt=bStyle.content.replace(/^[%22']|[%22']$/g,'');if(bTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-before-text'},bTxt);}if(aStyle&amp;&amp;aStyle.content&amp;&amp;aStyle.content!=='none'&amp;&amp;aStyle.content!=='normal'){let%20aTxt=aStyle.content.replace(/^[%22']|[%22']$/g,'');if(aTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-after-text'},aTxt);}if(el.shadowRoot)scan(el.shadowRoot);});const%20walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);while(walk.nextNode()){const%20node=walk.currentNode;if(node.parentElement&amp;&amp;!['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(node.parentElement.tagName)){if(!window[mapKey].has(node)){window[mapKey].set(node,node.textContent);}}}}scan(document.body);window[obsId]=new%20MutationObserver((mutations)=%3E{mutations.forEach(m=%3E{m.addedNodes.forEach(n=%3Escan(n));});});window[obsId].observe(document.body,{childList:true,subtree:true});function%20getShuffleStr(orig){let%20res='';for(let%20i=0;i%3Corig.length;i++){res+=/\s/.test(orig[i])?orig[i]:chars[(Math.random()*chars.length)|0];}return%20res;}function%20shuffle(){window[mapKey].forEach((orig,target)=%3E{try{if(target%20instanceof%20Node){if(target.parentNode)target.textContent=getShuffleStr(orig);}else%20if(target&amp;&amp;target.el){const%20shf=getShuffleStr(orig);if(target.type==='val'){target.el.value=shf;}else%20if(target.type==='ph'){target.el.placeholder=shf;}else%20if(target.type==='pseudo'){target.el.style.setProperty(target.prop,'%22'+shf+'%22');}}}catch(e){}});}function%20loop(){shuffle();window[id]=requestAnimationFrame(loop);}loop();})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const id='txt-shuffle-timer';const mapKey='__orig_txt_map__';const obsId='__txt_shuffle_obs__';const styleId='__txt_shuffle_style__';if(window[id]){cancelAnimationFrame(window[id]);delete window[id];if(window[obsId]){window[obsId].disconnect();delete window[obsId];}const st=document.getElementById(styleId);if(st)st.remove();if(window[mapKey]){window[mapKey].forEach((orig,target)=&gt;{try{if(target instanceof Node){if(target.parentNode)target.textContent=orig;}else if(target&amp;&amp;target.el){if(target.type==='val'){target.el.value=orig;}else if(target.type==='ph'){target.el.placeholder=orig;}else if(target.type==='pseudo'){target.el.style.removeProperty(target.prop);}}}catch(e){}});window[mapKey].clear();delete window[mapKey];}return;}const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%E3%81%82%E3%81%84%E3%81%86%E3%81%88%E3%81%8A%E3%81%8B%E3%81%8D%E3%81%8F%E3%81%91%E3%81%93%E3%81%95%E3%81%97%E3%81%99%E3%81%9B%E3%81%9D%E3%81%9F%E3%81%A1%E3%81%A4%E3%81%A6%E3%81%A8%E3%81%AA%E3%81%AB%E3%81%AC%E3%81%AD%E3%81%AE%E3%81%AF%E3%81%B2%E3%81%B5%E3%81%B8%E3%81%BB%E3%81%BE%E3%81%BF%E3%82%80%E3%82%81%E3%82%82%E3%82%84%E3%82%86%E3%82%88%E3%82%89%E3%82%8A%E3%82%8B%E3%82%8C%E3%82%8D%E3%82%8F%E3%82%92%E3%82%93#$@%&amp;*!?%E6%96%87%E5%AD%97%E5%8C%96%E3%81%91';window[mapKey]=window[mapKey]||new%20Map();if(!document.getElementById(styleId)){const%20st=document.createElement('style');st.id=styleId;st.innerHTML='*::before%20{%20content:%20var(--bg-before-text,%20inherit)%20!important;%20}%20*::after%20{%20content:%20var(--bg-after-text,%20inherit)%20!important;%20}';document.head.appendChild(st);}function%20scan(root){if(!root)return;const%20els=(root.nodeType===1)?[root,...root.querySelectorAll('*')]:[];els.forEach(el=%3E{if(['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(el.tagName))return;if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){let%20hasVal=false,hasPh=false;for(let%20k%20of%20window[mapKey].keys()){if(k.el===el){if(k.type==='val')hasVal=true;if(k.type==='ph')hasPh=true;}}if(!hasVal&amp;&amp;el.value)window[mapKey].set({el,type:'val'},el.value);if(!hasPh&amp;&amp;el.placeholder)window[mapKey].set({el,type:'ph'},el.placeholder);}const%20bStyle=window.getComputedStyle(el,'::before');const%20aStyle=window.getComputedStyle(el,'::after');if(bStyle&amp;&amp;bStyle.content&amp;&amp;bStyle.content!=='none'&amp;&amp;bStyle.content!=='normal'){let%20bTxt=bStyle.content.replace(/^[%22']|[%22']$/g,'');if(bTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-before-text'},bTxt);}if(aStyle&amp;&amp;aStyle.content&amp;&amp;aStyle.content!=='none'&amp;&amp;aStyle.content!=='normal'){let%20aTxt=aStyle.content.replace(/^[%22']|[%22']$/g,'');if(aTxt)window[mapKey].set({el,type:'pseudo',prop:'--bg-after-text'},aTxt);}if(el.shadowRoot)scan(el.shadowRoot);});const%20walk=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null,false);while(walk.nextNode()){const%20node=walk.currentNode;if(node.parentElement&amp;&amp;!['SCRIPT','STYLE','NOSCRIPT','VIDEO','CANVAS'].includes(node.parentElement.tagName)){if(!window[mapKey].has(node)){window[mapKey].set(node,node.textContent);}}}}scan(document.body);window[obsId]=new%20MutationObserver((mutations)=%3E{mutations.forEach(m=%3E{m.addedNodes.forEach(n=%3Escan(n));});});window[obsId].observe(document.body,{childList:true,subtree:true});function%20getShuffleStr(orig){let%20res='';for(let%20i=0;i%3Corig.length;i++){res+=/\s/.test(orig[i])?orig[i]:chars[(Math.random()*chars.length)|0];}return%20res;}function%20shuffle(){window[mapKey].forEach((orig,target)=%3E{try{if(target%20instanceof%20Node){if(target.parentNode)target.textContent=getShuffleStr(orig);}else%20if(target&amp;&amp;target.el){const%20shf=getShuffleStr(orig);if(target.type==='val'){target.el.value=shf;}else%20if(target.type==='ph'){target.el.placeholder=shf;}else%20if(target.type==='pseudo'){target.el.style.setProperty(target.prop,'%22'+shf+'%22');}}}catch(e){}});}function%20loop(){shuffle();window[id]=requestAnimationFrame(loop);}loop();})();" data-name="Text Bug Glitcher"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="image-minus"></i></div>
+<h3>Media Delete</h3>
+<p>メディア要素を削除します。もう一度押すと元に戻ります。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const KEY='__media_hidden_state__';const elements=document.querySelectorAll('img,video,audio,svg,canvas,picture,embed,object,iframe');if(!window[KEY]){window[KEY]={elements:[],bgElements:[]};elements.forEach(el=&gt;{window[KEY].elements.push({el:el,originalDisplay:el.style.display});el.style.display='none';});document.querySelectorAll('*').forEach(el=&gt;{const bg=window.getComputedStyle(el).backgroundImage;if(bg&amp;&amp;bg!=='none'){window[KEY].bgElements.push({el:el,originalBg:el.style.backgroundImage});el.style.backgroundImage='none';}});}else{window[KEY].elements.forEach(item=&gt;{item.el.style.display=item.originalDisplay;});window[KEY].bgElements.forEach(item=&gt;{item.el.style.backgroundImage=item.originalBg;});delete window[KEY];}})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const KEY='__media_hidden_state__';const elements=document.querySelectorAll('img,video,audio,svg,canvas,picture,embed,object,iframe');if(!window[KEY]){window[KEY]={elements:[],bgElements:[]};elements.forEach(el=&gt;{window[KEY].elements.push({el:el,originalDisplay:el.style.display});el.style.display='none';});document.querySelectorAll('*').forEach(el=&gt;{const bg=window.getComputedStyle(el).backgroundImage;if(bg&amp;&amp;bg!=='none'){window[KEY].bgElements.push({el:el,originalBg:el.style.backgroundImage});el.style.backgroundImage='none';}});}else{window[KEY].elements.forEach(item=&gt;{item.el.style.display=item.originalDisplay;});window[KEY].bgElements.forEach(item=&gt;{item.el.style.backgroundImage=item.originalBg;});delete window[KEY];}})();" data-name="Media Delete"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="pen-line"></i></div>
+<h3>Pagetext Editor Next</h3>
+<p>ページの文章を編集できるようにします。もう一度押すと変更を保存します。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a class="drag" href="javascript:(function(){const d=document;d.body.contentEditable=d.body.contentEditable==='true'?'false':'true';d.designMode=d.designMode==='on'?'off':'on';})();"><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="javascript:(function(){const d=document;d.body.contentEditable=d.body.contentEditable==='true'?'false':'true';d.designMode=d.designMode==='on'?'off':'on';})();" data-name="Pagetext Editor Next
+          "><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="images"></i></div>
+<h3>Image Bug Glitcher</h3>
+<p>ページの画像をバグらせます。もう一度押すと元に戻ります。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a !important;="" ${e.__filter_id}"]::before,="" ${fltrstr}="" [data-fltr-id="${e.__filter_id}" ]::after="" class="drag" filter:="" href="javascript:(function(){const K='__fluid_filter_anim_all__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('*').forEach(e=&gt;{if(e.__orig_fltr!==undefined){e.style.filter=e.__orig_fltr;delete e.__orig_fltr;}if(e.__filter_id){e.removeAttribute('data-fltr-id');delete e.__filter_id;}});const s=document.getElementById('__fltr_ps_style__');if(s)s.remove();delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){return{hue:rand(0,360),blur:rand(0,4),invert:rand(0,80),saturate:rand(100,300),contrast:rand(100,200)};}let styleEl=document.getElementById('__fltr_ps_style__');if(!styleEl){styleEl=document.createElement('style');styleEl.id='__fltr_ps_style__';document.head.appendChild(styleEl);}const targets=new Set(document.querySelectorAll('img,video,svg,canvas,iframe,picture,object,embed'));let idCounter=0;document.querySelectorAll('*').forEach(e=&gt;{try{const cs=window.getComputedStyle(e);const bg=cs.backgroundImage||cs.background;const bB=window.getComputedStyle(e,'::before').backgroundImage;const bA=window.getComputedStyle(e,'::after').backgroundImage;const hasBg=bg&amp;&amp;bg!=='none'&amp;&amp;bg.includes('url(');const hasBefore=bB&amp;&amp;bB!=='none'&amp;&amp;bB.includes('url(');const hasAfter=bA&amp;&amp;bA!=='none'&amp;&amp;bA.includes('url(');if(hasBg||hasBefore||hasAfter){targets.add(e);if(!e.__filter_id){e.__filter_id='fltr-'+(++idCounter);e.setAttribute('data-fltr-id',e.__filter_id);}}}catch(err){}});const states=new Map();targets.forEach(e=&gt;{if(e.__orig_fltr===undefined)e.__orig_fltr=e.style.filter||'';states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0});});function loop(now){let cssRules='';targets.forEach(e=&gt;{const s=states.get(e);if(!s)return;if(now-s.lastUpdate&gt;100){s.target=createTarget();s.lastUpdate=now;}const lerp=(a,b,t)=&gt;a+(b-a)*t;const c=s.curr,t=s.target,f=0.08;c.hue=lerp(c.hue,t.hue,f);c.blur=lerp(c.blur,t.blur,f);c.invert=lerp(c.invert,t.invert,f);c.saturate=lerp(c.saturate,t.saturate,f);c.contrast=lerp(c.contrast,t.contrast,f);const fltrStr=`hue-rotate(${c.hue}deg) blur(${c.blur}px) invert(${c.invert}%) saturate(${c.saturate}%) contrast(${c.contrast}%)`;e.style.filter=fltrStr;if(e.__filter_id){cssRules+=`[data-fltr-id=" {="" }\n`;}});styleel.textcontent='cssRules;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();"'><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button !important;="" ${e.__filter_id}"]::before,="" ${fltrstr}="" [data-fltr-id="${e.__filter_id}" ]::after="" class="copy" data-code="javascript:(function(){const K='__fluid_filter_anim_all__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('*').forEach(e=&gt;{if(e.__orig_fltr!==undefined){e.style.filter=e.__orig_fltr;delete e.__orig_fltr;}if(e.__filter_id){e.removeAttribute('data-fltr-id');delete e.__filter_id;}});const s=document.getElementById('__fltr_ps_style__');if(s)s.remove();delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){return{hue:rand(0,360),blur:rand(0,4),invert:rand(0,80),saturate:rand(100,300),contrast:rand(100,200)};}let styleEl=document.getElementById('__fltr_ps_style__');if(!styleEl){styleEl=document.createElement('style');styleEl.id='__fltr_ps_style__';document.head.appendChild(styleEl);}const targets=new Set(document.querySelectorAll('img,video,svg,canvas,iframe,picture,object,embed'));let idCounter=0;document.querySelectorAll('*').forEach(e=&gt;{try{const cs=window.getComputedStyle(e);const bg=cs.backgroundImage||cs.background;const bB=window.getComputedStyle(e,'::before').backgroundImage;const bA=window.getComputedStyle(e,'::after').backgroundImage;const hasBg=bg&amp;&amp;bg!=='none'&amp;&amp;bg.includes('url(');const hasBefore=bB&amp;&amp;bB!=='none'&amp;&amp;bB.includes('url(');const hasAfter=bA&amp;&amp;bA!=='none'&amp;&amp;bA.includes('url(');if(hasBg||hasBefore||hasAfter){targets.add(e);if(!e.__filter_id){e.__filter_id='fltr-'+(++idCounter);e.setAttribute('data-fltr-id',e.__filter_id);}}}catch(err){}});const states=new Map();targets.forEach(e=&gt;{if(e.__orig_fltr===undefined)e.__orig_fltr=e.style.filter||'';states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0});});function loop(now){let cssRules='';targets.forEach(e=&gt;{const s=states.get(e);if(!s)return;if(now-s.lastUpdate&gt;100){s.target=createTarget();s.lastUpdate=now;}const lerp=(a,b,t)=&gt;a+(b-a)*t;const c=s.curr,t=s.target,f=0.08;c.hue=lerp(c.hue,t.hue,f);c.blur=lerp(c.blur,t.blur,f);c.invert=lerp(c.invert,t.invert,f);c.saturate=lerp(c.saturate,t.saturate,f);c.contrast=lerp(c.contrast,t.contrast,f);const fltrStr=`hue-rotate(${c.hue}deg) blur(${c.blur}px) invert(${c.invert}%) saturate(${c.saturate}%) contrast(${c.contrast}%)`;e.style.filter=fltrStr;if(e.__filter_id){cssRules+=`[data-fltr-id=" data-name="Image Bug Glitcher
+          " filter:="" {="" }\n`;}});styleel.textcontent='cssRules;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();"'><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="audio-lines-x
                           "></i></div>
-      <h3>Audio Bug Glitcher</h3>
-      <p>ページの音声をバグらせます。もう一度押すと元に戻ります。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="
-          javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=>{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&&e.__was_playing){e.play().catch(()=>{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=>{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now<s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=>{});e.__was_playing=false;}if(now-s.lastUpdate>150){s.target=createTarget();s.lastUpdate=now;if(Math.random()<0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=>a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
+<h3>Audio Bug Glitcher</h3>
+<p>ページの音声をバグらせます。もう一度押すと元に戻ります。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a class="drag" href="
+          javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=&gt;{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&amp;&amp;e.__was_playing){e.play().catch(()=&gt;{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=&gt;{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now&lt;s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=&gt;{});e.__was_playing=false;}if(now-s.lastUpdate&gt;150){s.target=createTarget();s.lastUpdate=now;if(Math.random()&lt;0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=&gt;a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
           "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Audio Bug Glitcher
-          " data-code="
-          javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=>{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&&e.__was_playing){e.play().catch(()=>{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=>{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now<s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=>{});e.__was_playing=false;}if(now-s.lastUpdate>150){s.target=createTarget();s.lastUpdate=now;if(Math.random()<0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=>a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
+<button class="copy" data-code="
+          javascript:(function(){const K='__smooth_v_audio_mod_pause__';if(window[K]){cancelAnimationFrame(window[K].id);document.querySelectorAll('video, audio').forEach(e=&gt;{if(e.__orig_vol!==undefined){e.volume=e.__orig_vol;delete e.__orig_vol;}if(e.__orig_rate!==undefined){e.playbackRate=e.__orig_rate;delete e.__orig_rate;}if(e.paused&amp;&amp;e.__was_playing){e.play().catch(()=&gt;{});delete e.__was_playing;}});delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){return{vol:rand(0.1,1.0),rate:rand(0.25,4.0)};}const states=new Map();function getMedia(){return Array.from(document.querySelectorAll('video, audio'));}function loop(now){getMedia().forEach(e=&gt;{if(!states.has(e)){states.set(e,{curr:createTarget(),target:createTarget(),lastUpdate:0,pauseUntil:0});if(e.__orig_vol===undefined)e.__orig_vol=e.volume;if(e.__orig_rate===undefined)e.__orig_rate=e.playbackRate;}const s=states.get(e);if(now&lt;s.pauseUntil){if(!e.paused){e.__was_playing=true;e.pause();}return;}else if(e.__was_playing){e.play().catch(()=&gt;{});e.__was_playing=false;}if(now-s.lastUpdate&gt;150){s.target=createTarget();s.lastUpdate=now;if(Math.random()&lt;0.15){s.pauseUntil=now+rand(100,800);}}const lerp=(a,b,f)=&gt;a+(b-a)*f;const c=s.curr,t=s.target,factor=0.08;c.vol=lerp(c.vol,t.vol,factor);c.rate=lerp(c.rate,t.rate,factor);try{const finalVol=Math.max(0,Math.min(1.0,c.vol));const finalRate=Math.max(0.25,Math.min(4.0,c.rate));Object.defineProperty(e,'volume',{value:finalVol,writable:true,configurable:true});Object.defineProperty(e,'playbackRate',{value:finalRate,writable:true,configurable:true});e.volume=finalVol;e.playbackRate=finalRate;}catch(err){}});window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop)};})();
+          " data-name="Audio Bug Glitcher
           "><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="shield-alert"></i></div>
-      <h3>DeleterMax Hyper</h3>
-      <p>押されたとき開いていたページの内容を消去します。再読み込み、URL移動を禁じます。危険です。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="
-          javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=>{document.open();document.write('<!DOCTYPE html><html><head><title></title></head><body style="background:#fff;%22%3E%3C/body%3E%3C/html%3E');document.close();};wipe();setInterval(wipe,100);})();
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="shield-alert"></i></div>
+<h3>DeleterMax Hyper</h3>
+<p>押されたとき開いていたページの内容を消去します。再読み込み、URL移動を禁じます。危険です。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a "="" background:#fff;%22%3e%3c="" body%3e%3c="" class="drag" href="
+          javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=&gt;{document.open();document.write('&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body style=" html%3e');document.close();};wipe();setinterval(wipe,100);})();=""><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button "="" background:#fff;%22%3e%3c="" body%3e%3c="" class="copy" data-code="
+          javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=&gt;{document.open();document.write('&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body style=" data-name="DeleterMax Hyper
+          " html%3e');document.close();};wipe();setinterval(wipe,100);})();=""><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="shield-alert"></i></div>
+<h3>ほろ<ruby>41<rp>(</rp><rt>よい</rt><rp>)</rp></ruby> Extra</h3>
+<p>ページを酔ったような状態にします。実際に酔う可能性があるので気をつけてください。私は責任を負いません。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a class="drag" href="
+javascript:(function(){const K='__ultra_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;const st=document.getElementById('__ud_style__');if(st)st.remove();delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()&lt;0.6;return{blur:lowBlur?rand(1,6):rand(8,25),hue:rand(0,360),invert:Math.random()&lt;0.3?1:0,saturate:rand(150,400),contrast:rand(120,300),tx:rand(-180,180),ty:rand(-140,140),rot:rand(-25,25),rotX:rand(-50,50),rotY:rand(-60,60),scale:rand(0.75,1.45),perspective:rand(200,600)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';if(!document.getElementById('__ud_style__')){const st=document.createElement('style');st.id='__ud_style__';st.innerHTML='@keyframes ud-pulse { 0% { filter: invert(0); } 50% { filter: invert(0.8) hue-rotate(180deg); } 100% { filter: invert(0); } } html { overflow-x: hidden !important; }';document.head.appendChild(st);}let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate&gt;40){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=&gt;a+(b-a)*f;const f=0.25;curr.blur=lerp(curr.blur,target.blur,f);curr.hue=lerp(curr.hue,target.hue,f);curr.invert=lerp(curr.invert,target.invert,f);curr.saturate=lerp(curr.saturate,target.saturate,f);curr.contrast=lerp(curr.contrast,target.contrast,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);curr.perspective=lerp(curr.perspective,target.perspective,f);const waveX=Math.sin(now*0.011)*50+Math.sin(now*0.027)*25;const waveY=Math.cos(now*0.013)*40+Math.sin(now*0.019)*20;const waveZoom=Math.sin(now*0.007)*0.15;document.body.style.filter=`blur(${curr.blur}px) hue-rotate(${curr.hue}deg) invert(${curr.invert}) saturate(${curr.saturate}%) contrast(${curr.contrast}%)`;document.body.style.transform=`perspective(${curr.perspective}px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale+waveZoom})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();          "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
+<button class="copy" data-code="
+javascript:(function(){const K='__ultra_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;const st=document.getElementById('__ud_style__');if(st)st.remove();delete window[K];return;}const rand=(m,x)=&gt;m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()&lt;0.6;return{blur:lowBlur?rand(1,6):rand(8,25),hue:rand(0,360),invert:Math.random()&lt;0.3?1:0,saturate:rand(150,400),contrast:rand(120,300),tx:rand(-180,180),ty:rand(-140,140),rot:rand(-25,25),rotX:rand(-50,50),rotY:rand(-60,60),scale:rand(0.75,1.45),perspective:rand(200,600)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';if(!document.getElementById('__ud_style__')){const st=document.createElement('style');st.id='__ud_style__';st.innerHTML='@keyframes ud-pulse { 0% { filter: invert(0); } 50% { filter: invert(0.8) hue-rotate(180deg); } 100% { filter: invert(0); } } html { overflow-x: hidden !important; }';document.head.appendChild(st);}let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate&gt;40){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=&gt;a+(b-a)*f;const f=0.25;curr.blur=lerp(curr.blur,target.blur,f);curr.hue=lerp(curr.hue,target.hue,f);curr.invert=lerp(curr.invert,target.invert,f);curr.saturate=lerp(curr.saturate,target.saturate,f);curr.contrast=lerp(curr.contrast,target.contrast,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);curr.perspective=lerp(curr.perspective,target.perspective,f);const waveX=Math.sin(now*0.011)*50+Math.sin(now*0.027)*25;const waveY=Math.cos(now*0.013)*40+Math.sin(now*0.019)*20;const waveZoom=Math.sin(now*0.007)*0.15;document.body.style.filter=`blur(${curr.blur}px) hue-rotate(${curr.hue}deg) invert(${curr.invert}) saturate(${curr.saturate}%) contrast(${curr.contrast}%)`;document.body.style.transform=`perspective(${curr.perspective}px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale+waveZoom})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();          " data-name="Horo41 Extra
+          "><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+<article class="card">
+<div class="icon"><i data-lucide="galaxy"></i></div>
+<h3>Black Hole EasterEgg V2</h3>
+<p>ページにブラックホールエフェクトを発生させます。もう一度押すと急停止します。</p>
+<div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
+<div class="install">
+<a class="drag" href="
+javascript:(function(){var K='__bh_seamless_master_v15__';if(window[K]){window[K].stop();return;}function resetEl(el){el.style.transform='';el.style.opacity='';el.style.transition='';el.style.willChange='';}var state={active:true,timer:null,raf:null,elements:[],cleanups:[]};window[K]={stop:function(){state.active=false;if(state.timer)clearTimeout(state.timer);if(state.raf)cancelAnimationFrame(state.raf);state.cleanups.forEach(function(fn){try{fn();}catch(e){}});state.elements.forEach(resetEl);delete window[K];}};var c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'999999'});document.body.appendChild(c);state.cleanups.push(function(){c.remove();});var ctx=c.getContext('2d');let w=c.width=window.innerWidth,h=c.height=window.innerHeight,cx=w/2,cy=h/2;var st=document.createElement('style');st.innerHTML='@keyframes bh-grow { 0% { transform: translate(-50%,-50%) scale(0); opacity:0; } 20% { opacity:1; } 100% { transform: translate(-50%,-50%) scale(1.6); opacity:1; } } @keyframes bh-pulse { 0% { transform: translate(-50%,-50%) scale(1.6); filter: blur(0px); } 50% { transform: translate(-51%,-49%) scale(2.2); filter: blur(12px) drop-shadow(0 0 50px #ff0055);%20}%20100%%20{%20transform:%20translate(-50%,-50%)%20scale(0);%20filter:%20blur(25px);%20opacity:0;%20}%20}%20.__bh_core__%20{%20position:%20fixed;%20top:%2050%;%20left:%2050%;%20width:%20160px;%20height:%20160px;%20background:%20#000;%20border-radius:%2050%;%20z-index:%20999998;%20pointer-events:%20none;%20border:%202px%20solid%20#fff;%20box-shadow:%200%200%2040px%20#ff5500,%200%200%2080px%20#ff0055,%200%200%20150px%20rgba(255,100,0,0.4);%20animation:%20bh-grow%203s%20cubic-bezier(0.16,%201,%200.3,%201)%20forwards;%20}%20.__bh_pulse_active__%20{%20animation:%20bh-pulse%200.35s%20cubic-bezier(0.1,%200.9,%200.2,%201)%20forwards%20!important;%20}%20.__bh_overlay__%20{%20position:%20fixed;%20top:%200;%20left:%200;%20width:%20100vw;%20height:%20100vh;%20background:%20#000;%20opacity:%200;%20z-index:%201000000;%20pointer-events:%20none;%20transition:%20opacity%200.2s%20ease-out;%20}';document.head.appendChild(st);state.cleanups.push(function(){st.remove();});var%20hole=document.createElement('div');hole.className='__bh_core__';document.body.appendChild(hole);state.cleanups.push(function(){hole.remove();});var%20overlay=document.createElement('div');overlay.className='__bh_overlay__';document.body.appendChild(overlay);state.cleanups.push(function(){overlay.remove();});var%20rawAll=[...document.body.querySelectorAll('*')].filter(el=%3E{if(el===c||el===hole||el===overlay||el.contains(c)||el.contains(hole)||el.contains(overlay))return%20false;const%20rect=el.getBoundingClientRect();if(rect.width%3C10||rect.height%3C10)return%20false;if(rect.width%3E=w*0.95&amp;&amp;rect.height%3E=h*0.95)return%20false;const%20style=window.getComputedStyle(el);if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return%20false;return%20true;});state.elements=rawAll;const%20nodes=rawAll.map(el=%3E{const%20rect=el.getBoundingClientRect();const%20x=rect.left+rect.width/2,y=rect.top+rect.height/2;const%20dist=Math.hypot(x-cx,y-cy);el.style.willChange='transform,%20opacity';return{el,x,y,angle:Math.atan2(y-cy,x-cx),dist,origDist:Math.max(1,dist),rot:0,vr:0,vtheta:0.005+Math.random()*0.005,delay:dist*0.7};});const%20pts=[];for(let%20i=0;i%3C180;i++)pts.push({a:Math.random()*Math.PI*2,d:30+Math.random()*(Math.max(w,h)/1.4),v:0.6+Math.random()*0.4,w:0.015+Math.random()*0.015,r:Math.random()*2+0.8,alive:true,c:['#ff6600','#ff0055','#ffffff','#9900ff','#ffcc00'][Math.floor(Math.random()*5)]});let%20frame=0;let%20isEnding=false;const%20WAIT_FRAMES=90;function%20triggerEnd(){if(isEnding)return;isEnding=true;hole.classList.add('__bh_pulse_active__');ctx.clearRect(0,0,w,h);setTimeout(function(){overlay.style.opacity='1';setTimeout(function(){if(!state.active)return;hole.remove();c.remove();state.elements.forEach(resetEl);setTimeout(function(){if(!state.active)return;overlay.style.opacity='0';setTimeout(function(){if(window[K])window[K].stop();},600);},150);},200);},150);}function%20loop(){if(!state.active||isEnding)return;ctx.clearRect(0,0,w,h);frame++;let%20activePts=0;if(frame%3E30){pts.forEach(p=%3E{if(!p.alive)return;const%20g=600/(p.d+10);p.v+=g*0.05;p.d-=p.v*0.7;p.w+=0.001*(300/(p.d+10));p.a+=p.w;if(p.d%3C25){p.alive=false;return;}activePts++;const%20px=cx+Math.cos(p.a)*p.d,py=cy+Math.sin(p.a)*p.d;ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});}let%20remaining=0;const%20suckFrame=Math.max(0,frame-WAIT_FRAMES);nodes.forEach(n=%3E{if(suckFrame===0||suckFrame%3Cn.delay*0.03){remaining++;return;}if(n.dist%3C25){n.el.style.opacity='0';return;}remaining++;const%20gravity=1400/(n.dist*n.dist+800)+Math.pow(Math.max(0,1-n.dist/n.origDist),2)*2.0;n.vr+=gravity*0.3;n.dist-=n.vr;const%20angularVel=0.006+(200/(n.dist+20))*0.015;n.angle+=angularVel;n.rot+=angularVel*160;const%20distRatio=Math.max(0,n.dist/n.origDist);const%20scale=Math.pow(distRatio,0.9);const%20curX=cx+Math.cos(n.angle)*n.dist,curY=cy+Math.sin(n.angle)*n.dist;const%20stretch=1+(1-distRatio)*1.6;n.el.style.transform=%60translate3d(${curX-n.x}px,%20${curY-n.y}px,%200px)%20rotate(${n.rot}deg)%20scale(${scale})%20scaleX(${stretch})%60;});if((suckFrame%3E60&amp;&amp;remaining%3C=1&amp;&amp;activePts===0)||(suckFrame%3E280)){triggerEnd();return;}if(!isEnding){state.raf=requestAnimationFrame(loop);}}loop();})();
           "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="DeleterMax Hyper
-          " data-code="
-          javascript:(function(){const K='__permanent_wipe_all__';sessionStorage.setItem(K,'true');const wipe=()=>{document.open();document.write('<!DOCTYPE html><html><head><title></title></head><body style="background:#fff;%22%3E%3C/body%3E%3C/html%3E');document.close();};wipe();setInterval(wipe,100);})();
-          "><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="shield-alert"></i></div>
-      <h3>ほろ<ruby>41<rp>(</rp><rt>よい</rt><rp>)</rp></ruby> Extra</h3>
-      <p>ページを酔ったような状態にします。実際に酔う可能性があるので気をつけてください。私は責任を負いません。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="
-javascript:(function(){const K='__ultra_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;const st=document.getElementById('__ud_style__');if(st)st.remove();delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()<0.6;return{blur:lowBlur?rand(1,6):rand(8,25),hue:rand(0,360),invert:Math.random()<0.3?1:0,saturate:rand(150,400),contrast:rand(120,300),tx:rand(-180,180),ty:rand(-140,140),rot:rand(-25,25),rotX:rand(-50,50),rotY:rand(-60,60),scale:rand(0.75,1.45),perspective:rand(200,600)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';if(!document.getElementById('__ud_style__')){const st=document.createElement('style');st.id='__ud_style__';st.innerHTML='@keyframes ud-pulse { 0% { filter: invert(0); } 50% { filter: invert(0.8) hue-rotate(180deg); } 100% { filter: invert(0); } } html { overflow-x: hidden !important; }';document.head.appendChild(st);}let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate>40){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=>a+(b-a)*f;const f=0.25;curr.blur=lerp(curr.blur,target.blur,f);curr.hue=lerp(curr.hue,target.hue,f);curr.invert=lerp(curr.invert,target.invert,f);curr.saturate=lerp(curr.saturate,target.saturate,f);curr.contrast=lerp(curr.contrast,target.contrast,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);curr.perspective=lerp(curr.perspective,target.perspective,f);const waveX=Math.sin(now*0.011)*50+Math.sin(now*0.027)*25;const waveY=Math.cos(now*0.013)*40+Math.sin(now*0.019)*20;const waveZoom=Math.sin(now*0.007)*0.15;document.body.style.filter=`blur(${curr.blur}px) hue-rotate(${curr.hue}deg) invert(${curr.invert}) saturate(${curr.saturate}%) contrast(${curr.contrast}%)`;document.body.style.transform=`perspective(${curr.perspective}px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale+waveZoom})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();          "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Horo41 Extra
-          " data-code="
-javascript:(function(){const K='__ultra_drunk_master__';if(window[K]){cancelAnimationFrame(window[K].id);document.body.style.filter=window[K].origFilter;document.body.style.transform=window[K].origTransform;document.body.style.transformOrigin=window[K].origOrigin;const st=document.getElementById('__ud_style__');if(st)st.remove();delete window[K];return;}const rand=(m,x)=>m+Math.random()*(x-m);function createTarget(){const lowBlur=Math.random()<0.6;return{blur:lowBlur?rand(1,6):rand(8,25),hue:rand(0,360),invert:Math.random()<0.3?1:0,saturate:rand(150,400),contrast:rand(120,300),tx:rand(-180,180),ty:rand(-140,140),rot:rand(-25,25),rotX:rand(-50,50),rotY:rand(-60,60),scale:rand(0.75,1.45),perspective:rand(200,600)};}const origFilter=document.body.style.filter||'';const origTransform=document.body.style.transform||'';const origOrigin=document.body.style.transformOrigin||'';document.body.style.transformOrigin='center center';if(!document.getElementById('__ud_style__')){const st=document.createElement('style');st.id='__ud_style__';st.innerHTML='@keyframes ud-pulse { 0% { filter: invert(0); } 50% { filter: invert(0.8) hue-rotate(180deg); } 100% { filter: invert(0); } } html { overflow-x: hidden !important; }';document.head.appendChild(st);}let curr=createTarget(),target=createTarget(),lastUpdate=0;function loop(now){if(now-lastUpdate>40){target=createTarget();lastUpdate=now;}const lerp=(a,b,f)=>a+(b-a)*f;const f=0.25;curr.blur=lerp(curr.blur,target.blur,f);curr.hue=lerp(curr.hue,target.hue,f);curr.invert=lerp(curr.invert,target.invert,f);curr.saturate=lerp(curr.saturate,target.saturate,f);curr.contrast=lerp(curr.contrast,target.contrast,f);curr.tx=lerp(curr.tx,target.tx,f);curr.ty=lerp(curr.ty,target.ty,f);curr.rot=lerp(curr.rot,target.rot,f);curr.rotX=lerp(curr.rotX,target.rotX,f);curr.rotY=lerp(curr.rotY,target.rotY,f);curr.scale=lerp(curr.scale,target.scale,f);curr.perspective=lerp(curr.perspective,target.perspective,f);const waveX=Math.sin(now*0.011)*50+Math.sin(now*0.027)*25;const waveY=Math.cos(now*0.013)*40+Math.sin(now*0.019)*20;const waveZoom=Math.sin(now*0.007)*0.15;document.body.style.filter=`blur(${curr.blur}px) hue-rotate(${curr.hue}deg) invert(${curr.invert}) saturate(${curr.saturate}%) contrast(${curr.contrast}%)`;document.body.style.transform=`perspective(${curr.perspective}px) translate3d(${curr.tx+waveX}px, ${curr.ty+waveY}px, 0px) rotate(${curr.rot}deg) rotateX(${curr.rotX}deg) rotateY(${curr.rotY}deg) scale(${curr.scale+waveZoom})`;window[K].id=requestAnimationFrame(loop);}window[K]={id:requestAnimationFrame(loop),origFilter,origTransform,origOrigin};})();          "><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="icon"><i data-lucide="galaxy"></i></div>
-      <h3>Black Hole EasterEgg V2</h3>
-      <p>ページにブラックホールエフェクトを発生させます。もう一度押すと急停止します。</p>
-      <div class="meta"><span class="tag">UI</span><span class="tag">Utility</span></div>
-      <div class="install">
-        <a class="drag" href="
-javascript:(function(){var K='__bh_seamless_master_v15__';if(window[K]){window[K].stop();return;}function resetEl(el){el.style.transform='';el.style.opacity='';el.style.transition='';el.style.willChange='';}var state={active:true,timer:null,raf:null,elements:[],cleanups:[]};window[K]={stop:function(){state.active=false;if(state.timer)clearTimeout(state.timer);if(state.raf)cancelAnimationFrame(state.raf);state.cleanups.forEach(function(fn){try{fn();}catch(e){}});state.elements.forEach(resetEl);delete window[K];}};var c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'999999'});document.body.appendChild(c);state.cleanups.push(function(){c.remove();});var ctx=c.getContext('2d');let w=c.width=window.innerWidth,h=c.height=window.innerHeight,cx=w/2,cy=h/2;var st=document.createElement('style');st.innerHTML='@keyframes bh-grow { 0% { transform: translate(-50%,-50%) scale(0); opacity:0; } 20% { opacity:1; } 100% { transform: translate(-50%,-50%) scale(1.6); opacity:1; } } @keyframes bh-pulse { 0% { transform: translate(-50%,-50%) scale(1.6); filter: blur(0px); } 50% { transform: translate(-51%,-49%) scale(2.2); filter: blur(12px) drop-shadow(0 0 50px #ff0055);%20}%20100%%20{%20transform:%20translate(-50%,-50%)%20scale(0);%20filter:%20blur(25px);%20opacity:0;%20}%20}%20.__bh_core__%20{%20position:%20fixed;%20top:%2050%;%20left:%2050%;%20width:%20160px;%20height:%20160px;%20background:%20#000;%20border-radius:%2050%;%20z-index:%20999998;%20pointer-events:%20none;%20border:%202px%20solid%20#fff;%20box-shadow:%200%200%2040px%20#ff5500,%200%200%2080px%20#ff0055,%200%200%20150px%20rgba(255,100,0,0.4);%20animation:%20bh-grow%203s%20cubic-bezier(0.16,%201,%200.3,%201)%20forwards;%20}%20.__bh_pulse_active__%20{%20animation:%20bh-pulse%200.35s%20cubic-bezier(0.1,%200.9,%200.2,%201)%20forwards%20!important;%20}%20.__bh_overlay__%20{%20position:%20fixed;%20top:%200;%20left:%200;%20width:%20100vw;%20height:%20100vh;%20background:%20#000;%20opacity:%200;%20z-index:%201000000;%20pointer-events:%20none;%20transition:%20opacity%200.2s%20ease-out;%20}';document.head.appendChild(st);state.cleanups.push(function(){st.remove();});var%20hole=document.createElement('div');hole.className='__bh_core__';document.body.appendChild(hole);state.cleanups.push(function(){hole.remove();});var%20overlay=document.createElement('div');overlay.className='__bh_overlay__';document.body.appendChild(overlay);state.cleanups.push(function(){overlay.remove();});var%20rawAll=[...document.body.querySelectorAll('*')].filter(el=%3E{if(el===c||el===hole||el===overlay||el.contains(c)||el.contains(hole)||el.contains(overlay))return%20false;const%20rect=el.getBoundingClientRect();if(rect.width%3C10||rect.height%3C10)return%20false;if(rect.width%3E=w*0.95&&rect.height%3E=h*0.95)return%20false;const%20style=window.getComputedStyle(el);if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return%20false;return%20true;});state.elements=rawAll;const%20nodes=rawAll.map(el=%3E{const%20rect=el.getBoundingClientRect();const%20x=rect.left+rect.width/2,y=rect.top+rect.height/2;const%20dist=Math.hypot(x-cx,y-cy);el.style.willChange='transform,%20opacity';return{el,x,y,angle:Math.atan2(y-cy,x-cx),dist,origDist:Math.max(1,dist),rot:0,vr:0,vtheta:0.005+Math.random()*0.005,delay:dist*0.7};});const%20pts=[];for(let%20i=0;i%3C180;i++)pts.push({a:Math.random()*Math.PI*2,d:30+Math.random()*(Math.max(w,h)/1.4),v:0.6+Math.random()*0.4,w:0.015+Math.random()*0.015,r:Math.random()*2+0.8,alive:true,c:['#ff6600','#ff0055','#ffffff','#9900ff','#ffcc00'][Math.floor(Math.random()*5)]});let%20frame=0;let%20isEnding=false;const%20WAIT_FRAMES=90;function%20triggerEnd(){if(isEnding)return;isEnding=true;hole.classList.add('__bh_pulse_active__');ctx.clearRect(0,0,w,h);setTimeout(function(){overlay.style.opacity='1';setTimeout(function(){if(!state.active)return;hole.remove();c.remove();state.elements.forEach(resetEl);setTimeout(function(){if(!state.active)return;overlay.style.opacity='0';setTimeout(function(){if(window[K])window[K].stop();},600);},150);},200);},150);}function%20loop(){if(!state.active||isEnding)return;ctx.clearRect(0,0,w,h);frame++;let%20activePts=0;if(frame%3E30){pts.forEach(p=%3E{if(!p.alive)return;const%20g=600/(p.d+10);p.v+=g*0.05;p.d-=p.v*0.7;p.w+=0.001*(300/(p.d+10));p.a+=p.w;if(p.d%3C25){p.alive=false;return;}activePts++;const%20px=cx+Math.cos(p.a)*p.d,py=cy+Math.sin(p.a)*p.d;ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});}let%20remaining=0;const%20suckFrame=Math.max(0,frame-WAIT_FRAMES);nodes.forEach(n=%3E{if(suckFrame===0||suckFrame%3Cn.delay*0.03){remaining++;return;}if(n.dist%3C25){n.el.style.opacity='0';return;}remaining++;const%20gravity=1400/(n.dist*n.dist+800)+Math.pow(Math.max(0,1-n.dist/n.origDist),2)*2.0;n.vr+=gravity*0.3;n.dist-=n.vr;const%20angularVel=0.006+(200/(n.dist+20))*0.015;n.angle+=angularVel;n.rot+=angularVel*160;const%20distRatio=Math.max(0,n.dist/n.origDist);const%20scale=Math.pow(distRatio,0.9);const%20curX=cx+Math.cos(n.angle)*n.dist,curY=cy+Math.sin(n.angle)*n.dist;const%20stretch=1+(1-distRatio)*1.6;n.el.style.transform=%60translate3d(${curX-n.x}px,%20${curY-n.y}px,%200px)%20rotate(${n.rot}deg)%20scale(${scale})%20scaleX(${stretch})%60;});if((suckFrame%3E60&&remaining%3C=1&&activePts===0)||(suckFrame%3E280)){triggerEnd();return;}if(!isEnding){state.raf=requestAnimationFrame(loop);}}loop();})();
-          "><i data-lucide="bookmark-plus"></i>ブックマークに追加</a>
-        <button class="copy" data-name="Horo41 Extra
-          " data-code="
-javascript:(function(){var K='__bh_seamless_master_v15__';if(window[K]){window[K].stop();return;}function resetEl(el){el.style.transform='';el.style.opacity='';el.style.transition='';el.style.willChange='';}var state={active:true,timer:null,raf:null,elements:[],cleanups:[]};window[K]={stop:function(){state.active=false;if(state.timer)clearTimeout(state.timer);if(state.raf)cancelAnimationFrame(state.raf);state.cleanups.forEach(function(fn){try{fn();}catch(e){}});state.elements.forEach(resetEl);delete window[K];}};var c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'999999'});document.body.appendChild(c);state.cleanups.push(function(){c.remove();});var ctx=c.getContext('2d');let w=c.width=window.innerWidth,h=c.height=window.innerHeight,cx=w/2,cy=h/2;var st=document.createElement('style');st.innerHTML='@keyframes bh-grow { 0% { transform: translate(-50%,-50%) scale(0); opacity:0; } 20% { opacity:1; } 100% { transform: translate(-50%,-50%) scale(1.6); opacity:1; } } @keyframes bh-pulse { 0% { transform: translate(-50%,-50%) scale(1.6); filter: blur(0px); } 50% { transform: translate(-51%,-49%) scale(2.2); filter: blur(12px) drop-shadow(0 0 50px #ff0055);%20}%20100%%20{%20transform:%20translate(-50%,-50%)%20scale(0);%20filter:%20blur(25px);%20opacity:0;%20}%20}%20.__bh_core__%20{%20position:%20fixed;%20top:%2050%;%20left:%2050%;%20width:%20160px;%20height:%20160px;%20background:%20#000;%20border-radius:%2050%;%20z-index:%20999998;%20pointer-events:%20none;%20border:%202px%20solid%20#fff;%20box-shadow:%200%200%2040px%20#ff5500,%200%200%2080px%20#ff0055,%200%200%20150px%20rgba(255,100,0,0.4);%20animation:%20bh-grow%203s%20cubic-bezier(0.16,%201,%200.3,%201)%20forwards;%20}%20.__bh_pulse_active__%20{%20animation:%20bh-pulse%200.35s%20cubic-bezier(0.1,%200.9,%200.2,%201)%20forwards%20!important;%20}%20.__bh_overlay__%20{%20position:%20fixed;%20top:%200;%20left:%200;%20width:%20100vw;%20height:%20100vh;%20background:%20#000;%20opacity:%200;%20z-index:%201000000;%20pointer-events:%20none;%20transition:%20opacity%200.2s%20ease-out;%20}';document.head.appendChild(st);state.cleanups.push(function(){st.remove();});var%20hole=document.createElement('div');hole.className='__bh_core__';document.body.appendChild(hole);state.cleanups.push(function(){hole.remove();});var%20overlay=document.createElement('div');overlay.className='__bh_overlay__';document.body.appendChild(overlay);state.cleanups.push(function(){overlay.remove();});var%20rawAll=[...document.body.querySelectorAll('*')].filter(el=%3E{if(el===c||el===hole||el===overlay||el.contains(c)||el.contains(hole)||el.contains(overlay))return%20false;const%20rect=el.getBoundingClientRect();if(rect.width%3C10||rect.height%3C10)return%20false;if(rect.width%3E=w*0.95&&rect.height%3E=h*0.95)return%20false;const%20style=window.getComputedStyle(el);if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return%20false;return%20true;});state.elements=rawAll;const%20nodes=rawAll.map(el=%3E{const%20rect=el.getBoundingClientRect();const%20x=rect.left+rect.width/2,y=rect.top+rect.height/2;const%20dist=Math.hypot(x-cx,y-cy);el.style.willChange='transform,%20opacity';return{el,x,y,angle:Math.atan2(y-cy,x-cx),dist,origDist:Math.max(1,dist),rot:0,vr:0,vtheta:0.005+Math.random()*0.005,delay:dist*0.7};});const%20pts=[];for(let%20i=0;i%3C180;i++)pts.push({a:Math.random()*Math.PI*2,d:30+Math.random()*(Math.max(w,h)/1.4),v:0.6+Math.random()*0.4,w:0.015+Math.random()*0.015,r:Math.random()*2+0.8,alive:true,c:['#ff6600','#ff0055','#ffffff','#9900ff','#ffcc00'][Math.floor(Math.random()*5)]});let%20frame=0;let%20isEnding=false;const%20WAIT_FRAMES=90;function%20triggerEnd(){if(isEnding)return;isEnding=true;hole.classList.add('__bh_pulse_active__');ctx.clearRect(0,0,w,h);setTimeout(function(){overlay.style.opacity='1';setTimeout(function(){if(!state.active)return;hole.remove();c.remove();state.elements.forEach(resetEl);setTimeout(function(){if(!state.active)return;overlay.style.opacity='0';setTimeout(function(){if(window[K])window[K].stop();},600);},150);},200);},150);}function%20loop(){if(!state.active||isEnding)return;ctx.clearRect(0,0,w,h);frame++;let%20activePts=0;if(frame%3E30){pts.forEach(p=%3E{if(!p.alive)return;const%20g=600/(p.d+10);p.v+=g*0.05;p.d-=p.v*0.7;p.w+=0.001*(300/(p.d+10));p.a+=p.w;if(p.d%3C25){p.alive=false;return;}activePts++;const%20px=cx+Math.cos(p.a)*p.d,py=cy+Math.sin(p.a)*p.d;ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});}let%20remaining=0;const%20suckFrame=Math.max(0,frame-WAIT_FRAMES);nodes.forEach(n=%3E{if(suckFrame===0||suckFrame%3Cn.delay*0.03){remaining++;return;}if(n.dist%3C25){n.el.style.opacity='0';return;}remaining++;const%20gravity=1400/(n.dist*n.dist+800)+Math.pow(Math.max(0,1-n.dist/n.origDist),2)*2.0;n.vr+=gravity*0.3;n.dist-=n.vr;const%20angularVel=0.006+(200/(n.dist+20))*0.015;n.angle+=angularVel;n.rot+=angularVel*160;const%20distRatio=Math.max(0,n.dist/n.origDist);const%20scale=Math.pow(distRatio,0.9);const%20curX=cx+Math.cos(n.angle)*n.dist,curY=cy+Math.sin(n.angle)*n.dist;const%20stretch=1+(1-distRatio)*1.6;n.el.style.transform=%60translate3d(${curX-n.x}px,%20${curY-n.y}px,%200px)%20rotate(${n.rot}deg)%20scale(${scale})%20scaleX(${stretch})%60;});if((suckFrame%3E60&&remaining%3C=1&&activePts===0)||(suckFrame%3E280)){triggerEnd();return;}if(!isEnding){state.raf=requestAnimationFrame(loop);}}loop();})();
-          "><i data-lucide="copy"></i>コピー</button>
-      </div>
-    </article>
-    
-
-  </div>
+<button class="copy" data-code="
+javascript:(function(){var K='__bh_seamless_master_v15__';if(window[K]){window[K].stop();return;}function resetEl(el){el.style.transform='';el.style.opacity='';el.style.transition='';el.style.willChange='';}var state={active:true,timer:null,raf:null,elements:[],cleanups:[]};window[K]={stop:function(){state.active=false;if(state.timer)clearTimeout(state.timer);if(state.raf)cancelAnimationFrame(state.raf);state.cleanups.forEach(function(fn){try{fn();}catch(e){}});state.elements.forEach(resetEl);delete window[K];}};var c=document.createElement('canvas');Object.assign(c.style,{position:'fixed',top:'0',left:'0',width:'100vw',height:'100vh',pointerEvents:'none',zIndex:'999999'});document.body.appendChild(c);state.cleanups.push(function(){c.remove();});var ctx=c.getContext('2d');let w=c.width=window.innerWidth,h=c.height=window.innerHeight,cx=w/2,cy=h/2;var st=document.createElement('style');st.innerHTML='@keyframes bh-grow { 0% { transform: translate(-50%,-50%) scale(0); opacity:0; } 20% { opacity:1; } 100% { transform: translate(-50%,-50%) scale(1.6); opacity:1; } } @keyframes bh-pulse { 0% { transform: translate(-50%,-50%) scale(1.6); filter: blur(0px); } 50% { transform: translate(-51%,-49%) scale(2.2); filter: blur(12px) drop-shadow(0 0 50px #ff0055);%20}%20100%%20{%20transform:%20translate(-50%,-50%)%20scale(0);%20filter:%20blur(25px);%20opacity:0;%20}%20}%20.__bh_core__%20{%20position:%20fixed;%20top:%2050%;%20left:%2050%;%20width:%20160px;%20height:%20160px;%20background:%20#000;%20border-radius:%2050%;%20z-index:%20999998;%20pointer-events:%20none;%20border:%202px%20solid%20#fff;%20box-shadow:%200%200%2040px%20#ff5500,%200%200%2080px%20#ff0055,%200%200%20150px%20rgba(255,100,0,0.4);%20animation:%20bh-grow%203s%20cubic-bezier(0.16,%201,%200.3,%201)%20forwards;%20}%20.__bh_pulse_active__%20{%20animation:%20bh-pulse%200.35s%20cubic-bezier(0.1,%200.9,%200.2,%201)%20forwards%20!important;%20}%20.__bh_overlay__%20{%20position:%20fixed;%20top:%200;%20left:%200;%20width:%20100vw;%20height:%20100vh;%20background:%20#000;%20opacity:%200;%20z-index:%201000000;%20pointer-events:%20none;%20transition:%20opacity%200.2s%20ease-out;%20}';document.head.appendChild(st);state.cleanups.push(function(){st.remove();});var%20hole=document.createElement('div');hole.className='__bh_core__';document.body.appendChild(hole);state.cleanups.push(function(){hole.remove();});var%20overlay=document.createElement('div');overlay.className='__bh_overlay__';document.body.appendChild(overlay);state.cleanups.push(function(){overlay.remove();});var%20rawAll=[...document.body.querySelectorAll('*')].filter(el=%3E{if(el===c||el===hole||el===overlay||el.contains(c)||el.contains(hole)||el.contains(overlay))return%20false;const%20rect=el.getBoundingClientRect();if(rect.width%3C10||rect.height%3C10)return%20false;if(rect.width%3E=w*0.95&amp;&amp;rect.height%3E=h*0.95)return%20false;const%20style=window.getComputedStyle(el);if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0')return%20false;return%20true;});state.elements=rawAll;const%20nodes=rawAll.map(el=%3E{const%20rect=el.getBoundingClientRect();const%20x=rect.left+rect.width/2,y=rect.top+rect.height/2;const%20dist=Math.hypot(x-cx,y-cy);el.style.willChange='transform,%20opacity';return{el,x,y,angle:Math.atan2(y-cy,x-cx),dist,origDist:Math.max(1,dist),rot:0,vr:0,vtheta:0.005+Math.random()*0.005,delay:dist*0.7};});const%20pts=[];for(let%20i=0;i%3C180;i++)pts.push({a:Math.random()*Math.PI*2,d:30+Math.random()*(Math.max(w,h)/1.4),v:0.6+Math.random()*0.4,w:0.015+Math.random()*0.015,r:Math.random()*2+0.8,alive:true,c:['#ff6600','#ff0055','#ffffff','#9900ff','#ffcc00'][Math.floor(Math.random()*5)]});let%20frame=0;let%20isEnding=false;const%20WAIT_FRAMES=90;function%20triggerEnd(){if(isEnding)return;isEnding=true;hole.classList.add('__bh_pulse_active__');ctx.clearRect(0,0,w,h);setTimeout(function(){overlay.style.opacity='1';setTimeout(function(){if(!state.active)return;hole.remove();c.remove();state.elements.forEach(resetEl);setTimeout(function(){if(!state.active)return;overlay.style.opacity='0';setTimeout(function(){if(window[K])window[K].stop();},600);},150);},200);},150);}function%20loop(){if(!state.active||isEnding)return;ctx.clearRect(0,0,w,h);frame++;let%20activePts=0;if(frame%3E30){pts.forEach(p=%3E{if(!p.alive)return;const%20g=600/(p.d+10);p.v+=g*0.05;p.d-=p.v*0.7;p.w+=0.001*(300/(p.d+10));p.a+=p.w;if(p.d%3C25){p.alive=false;return;}activePts++;const%20px=cx+Math.cos(p.a)*p.d,py=cy+Math.sin(p.a)*p.d;ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=p.c;ctx.fill();});}let%20remaining=0;const%20suckFrame=Math.max(0,frame-WAIT_FRAMES);nodes.forEach(n=%3E{if(suckFrame===0||suckFrame%3Cn.delay*0.03){remaining++;return;}if(n.dist%3C25){n.el.style.opacity='0';return;}remaining++;const%20gravity=1400/(n.dist*n.dist+800)+Math.pow(Math.max(0,1-n.dist/n.origDist),2)*2.0;n.vr+=gravity*0.3;n.dist-=n.vr;const%20angularVel=0.006+(200/(n.dist+20))*0.015;n.angle+=angularVel;n.rot+=angularVel*160;const%20distRatio=Math.max(0,n.dist/n.origDist);const%20scale=Math.pow(distRatio,0.9);const%20curX=cx+Math.cos(n.angle)*n.dist,curY=cy+Math.sin(n.angle)*n.dist;const%20stretch=1+(1-distRatio)*1.6;n.el.style.transform=%60translate3d(${curX-n.x}px,%20${curY-n.y}px,%200px)%20rotate(${n.rot}deg)%20scale(${scale})%20scaleX(${stretch})%60;});if((suckFrame%3E60&amp;&amp;remaining%3C=1&amp;&amp;activePts===0)||(suckFrame%3E280)){triggerEnd();return;}if(!isEnding){state.raf=requestAnimationFrame(loop);}}loop();})();
+          " data-name="Black Hole EasterEgg V2"><i data-lucide="copy"></i>コピー</button>
+</div>
+</article>
+</div>
 </section>
-
-<section id="howto" class="container instructions">
-  <h2>使い方</h2>
-  <div class="steps">
-    <div class="step"><div class="step-head"><span class="num">01</span><i data-lucide="bookmark"></i></div><p><b>ブックマークバーを表示</b><br>Chrome / Edge / Firefox などでブックマークバーを表示します。</p></div>
-    <div class="step"><div class="step-head"><span class="num">02</span><i data-lucide="mouse-pointer-click"></i></div><p><b>ボタンをドラッグ</b><br>「ブックマークに追加」をブックマークバーへドラッグします。</p></div>
-    <div class="step"><div class="step-head"><span class="num">03</span><i data-lucide="play"></i></div><p><b>好きなページで実行</b><br>作ったブックマークをクリックすれば、そのページで動作します。</p></div>
-  </div>
+<section class="container instructions" id="howto">
+<h2>使い方</h2>
+<div class="steps">
+<div class="step"><div class="step-head"><span class="num">01</span><i data-lucide="bookmark"></i></div><p><b>ブックマークバーを表示</b><br/>Chrome / Edge / Firefox などでブックマークバーを表示します。</p></div>
+<div class="step"><div class="step-head"><span class="num">02</span><i data-lucide="mouse-pointer-click"></i></div><p><b>ボタンをドラッグ</b><br/>「ブックマークに追加」をブックマークバーへドラッグします。</p></div>
+<div class="step"><div class="step-head"><span class="num">03</span><i data-lucide="play"></i></div><p><b>好きなページで実行</b><br/>作ったブックマークをクリックすれば、そのページで動作します。</p></div>
+</div>
 </section>
 </main>
-
 <footer><div class="container">© 2026 Bright Market / by Foxsign,in hp17 group.</div></footer>
-
 <script>
 document.querySelectorAll('.copy').forEach(btn=>{
   btn.addEventListener('click',async()=>{
@@ -825,13 +1285,13 @@ document.querySelectorAll('.copy').forEach(btn=>{
   const root=document.documentElement;
   const button=document.getElementById('themeToggle');
   const saved=localStorage.getItem('bright-market-theme');
-  const preferred=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';
-  const initial=saved||preferred;
+  const initial=saved==='light'||saved==='dark'?saved:'dark';
   root.dataset.theme=initial;
   function update(){
     const light=root.dataset.theme==='light';
     button.setAttribute('aria-pressed',String(light));
     button.setAttribute('aria-label',light?'ダークテーマに切り替える':'ライトテーマに切り替える');
+    button.title=light?'ダークテーマ':'ライトテーマ';
   }
   update();
   button.addEventListener('click',()=>{
